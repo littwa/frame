@@ -126,7 +126,7 @@ export class UsersService {
             username: createUserCustomerDto.email.split('@')[0],
             // verificationCode: code,
             status: EStatus.Verified, // EStatus.NotVerified,
-            // customer: createUserCustomerDto.customer,
+            dateCreated: Date.now(),
         });
 
         // this.emailService.sendUserConfirmation(user.email, user.verificationCode);

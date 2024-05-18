@@ -109,24 +109,6 @@ export class UsersController {
     //   console.log(1999999999);
     // } // here will be redirect
 
-    @Get('google-auth/redirect')
-    @UseGuards(AuthGuard('google'))
-    @Redirect() // 'http://localhost:4200/choicse-customer'  // google-auth/return
-    async googleAuthRedirect(@Req() req, @Res() res, @Body() body, @Headers() headers, @Query() q) {
-        const dto = await this.userService.googleLogin(req);
-        const qString = Object.entries(dto).reduce((acc, el, i, arr) => {
-            acc = acc + el[0].toString() + '=' + el[1].toString();
-            if (arr.length - 1 !== i) acc = acc + '&';
-            return acc;
-        }, '');
-
-        // return {
-        //   url: `${process.env.BASE_URL_FRONT_END}?${qString}`,
-        // }
-        console.log(78);
-        return res.redirect(`${process.env.BASE_URL_FRONT_END}?${qString}`);
-    }
-
     @ApiOperation({ summary: 'Create User' })
     @ApiResponse({ status: 200, description: 'Return ...' })
     @ApiResponse({ status: 404, description: 'Can not ...' })
