@@ -130,7 +130,7 @@ export class CommonService {
         return response.data;
     }
 
-    public async cloudinaryHost(file: Express.Multer.File, prefix = 'sport') {
+    public async cloudinaryHost(file: Express.Multer.File, prefix = 'frame') {
         if(!file) return;
         cloudinary.v2.config(this.configService.get('cloudinary'));
 

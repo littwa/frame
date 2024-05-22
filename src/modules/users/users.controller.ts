@@ -27,22 +27,11 @@ import {
     UsePipes,
     ValidationPipe,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { NextFunction, Response } from 'express';
-import { InjectModel } from '@nestjs/mongoose';
-import { User, UserDocument } from './user.schema';
-import { Model } from 'mongoose';
+import { UsersService } from 'src/modules/users/users.service';
 import { ERole } from 'src/shared/enums/role.enum';
 import { AuthGuard } from '@nestjs/passport';
-import { Roles } from '../../authorization/roles.decorator';
-import { RolesGuard } from '../../authorization/roles.guard';
-import * as passport from 'passport';
+import { Roles } from 'src/authorization/roles.decorator';
 import { AnyFilesInterceptor, FileFieldsInterceptor } from '@nestjs/platform-express';
-import * as multer from 'multer';
-import * as path from 'path';
-import { storage } from 'src/config/config-entity';
-// import * as sharp from 'sharp';
-// import { CommonService } from '../../shared/services/common.service';
 import {
     CartProductUserParamDto,
     UserCustomerCreateDto,
@@ -52,76 +41,31 @@ import {
     UserUpdateDto,
 } from './dto/user.dto';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ParamIdDto } from '../../shared/dto/common.dto';
-import { JwtAuthGuard } from "../../guards/jwt-auth.guard";
-// import { ConfigServiceTest } from '../app.module';
+import { ParamIdDto } from 'src/shared/dto/common.dto';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 
-// const storage = multer.diskStorage({
-//   destination: 'uploads',
-//   // destination: function (req, file, cb) {
-//   //   cb(null, 'uploads');
-//   // },
-//   filename: function (req, file, cb) {
-//     const uniqueSuffix = Date.now();
-//     const ext = path.parse(file.originalname).ext;
-//     cb(null, uniqueSuffix + ext);
-//   },
-// });
 
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
     constructor(
-        // private commonService: CommonService,
         private readonly userService: UsersService,
     ) {}
-
-    @Post('post-test')
-    @UseInterceptors(AnyFilesInterceptor())
-    async getTest(
-        @Body() body: UserUpdateDto,
-        @Param() param,
-        @Query() query,
-        @UploadedFiles() files: Array<Express.Multer.File>,
-    ) {
-        // const service = await this.userService.test(body, param, query, files[0])
-        // const service = await this.commonService.imgbbHost(files[0]);
-        // const service = await this.commonService.cloudinaryHost(files[0]);
-        const service = this.userService.decodeAnyToken('Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI2NTM1MTkwZjgwNDFmYjk5MWJhNmE0YWUiLCJ1aWQiOiI2MmRlYzg4NWNjMWE1YTgwMjc4MzYzMzAiLCJzZWNyZXQiOiJzd29yZGZpc2giLCJlbWFpbCI6ImRldmFjY0BtZXRhLnVhIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk3OTc4NjM5LCJleHAiOjE2OTc5ODIyMzl9.ujVhZbemDNOLE3h9PF8RwUjYZHMCttNU6Vn_lMcgidA');
-        return {
-            service,
-            // files: this.commonService.multerFactory(files),
-            // req: req,
-            // BASE_URL_API: process.env.BASE_URL_API,
-            // GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-            // BASE_URL_API_FULL: process.env.BASE_URL_API_FULL,
-            // BASE_URL_FRONT_END: process.env.BASE_URL_FRONT_END,
-            // TOKEN_SECRET: process.env.TOKEN_SECRET,
-            // processCwd: process.cwd(),
-            // dirname__: __dirname,
-        };
-    }
-
-    // Google-auth
-    // @Get('google-auth')
-    // @UseGuards(AuthGuard('google'))
-    // async googleAuth() {
-    //   console.log(1999999999);
-    // } // here will be redirect
 
     @ApiOperation({ summary: 'Create User' })
     @ApiResponse({ status: 200, description: 'Return ...' })
     @ApiResponse({ status: 404, description: 'Can not ...' })
     @Post('sign-up')
     @UsePipes(new ValidationPipe({ whitelist: true }))
+    @UseInterceptors(AnyFilesInterceptor())
     @HttpCode(HttpStatus.CREATED)
-    postSignUpUser(@Body() body: UserCustomerCreateDto) {
+    postSignUpUser(@Body() body: UserCustomerCreateDto, @UploadedFiles() files: Array<Express.Multer.File> = []) {
         console.log(100001, body);
         switch (body.role) {
             // case ERole.Admin:
             //   return this.userService.createUserAdmin(body);
             case ERole.Customer:
-                return this.userService.createUserCustomer(body);
+                return this.userService.createUserCustomer(body, files[0]);
             default:
                 return new BadRequestException('unknown role');
         }
@@ -179,7 +123,6 @@ export class UsersController {
     @Get('get/:userId')
     @UseGuards(JwtAuthGuard)
     getUserById(@Request() req, @Param() param) {
-        // console.log('req.user-', req.user);
         return this.userService.getUserById(param.userId);
     }
 
@@ -255,21 +198,18 @@ export class UsersController {
 
     @Patch('add-favorite-product/:productId')
     @UseGuards(JwtAuthGuard)
-    // @Roles(ERole.Admin)
     addFavoriteProduct(@Request() req, @Param() param) {
         return this.userService.addFavoriteProduct(param.productId, req);
     }
 
     @Patch('del-favorite-product/:productId')
     @UseGuards(JwtAuthGuard)
-    // @Roles(ERole.Admin)
     delFavoriteProduct(@Request() req, @Param() param) {
         return this.userService.delFavoriteProduct(param.productId, req);
     }
 
     @Patch('add-cart-product/:productId/:amount')
     @UseGuards(JwtAuthGuard)
-    // @Roles(ERole.Admin)
     addCartProduct(@Request() req, @Param() param: CartProductUserParamDto) {
         return this.userService.addCartProduct(param, req);
     }
@@ -289,7 +229,6 @@ export class UsersController {
 
     @Get('get/user-customer-info')
     @UseGuards(JwtAuthGuard)
-    // @Roles(ERole.Admin)
     getCustomer(@Request() req) {
         return this.userService.getInfoUserCustomer(req.user);
     }
@@ -319,5 +258,31 @@ export class UsersController {
         // console.log('req: ', req.rawHeaders);
         // console.log(10000333, Object.getOwnPropertySymbols(request)[1]);
         return { res: 'res' };
+    }
+
+    @Post('post-test')
+    @UseInterceptors(AnyFilesInterceptor())
+    async getTest(
+      @Body() body: UserUpdateDto,
+      @Param() param,
+      @Query() query,
+      @UploadedFiles() files: Array<Express.Multer.File>,
+    ) {
+        // const service = await this.userService.test(body, param, query, files[0])
+        // const service = await this.commonService.imgbbHost(files[0]);
+        // const service = await this.commonService.cloudinaryHost(files[0]);
+        const service = this.userService.decodeAnyToken('Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI2NTM1MTkwZjgwNDFmYjk5MWJhNmE0YWUiLCJ1aWQiOiI2MmRlYzg4NWNjMWE1YTgwMjc4MzYzMzAiLCJzZWNyZXQiOiJzd29yZGZpc2giLCJlbWFpbCI6ImRldmFjY0BtZXRhLnVhIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk3OTc4NjM5LCJleHAiOjE2OTc5ODIyMzl9.ujVhZbemDNOLE3h9PF8RwUjYZHMCttNU6Vn_lMcgidA');
+        return {
+            service,
+            // files: this.commonService.multerFactory(files),
+            // req: req,
+            // BASE_URL_API: process.env.BASE_URL_API,
+            // GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+            // BASE_URL_API_FULL: process.env.BASE_URL_API_FULL,
+            // BASE_URL_FRONT_END: process.env.BASE_URL_FRONT_END,
+            // TOKEN_SECRET: process.env.TOKEN_SECRET,
+            // processCwd: process.cwd(),
+            // dirname__: __dirname,
+        };
     }
 }

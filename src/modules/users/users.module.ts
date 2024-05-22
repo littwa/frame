@@ -6,12 +6,11 @@ import { User, UserSchema } from './user.schema';
 import { SharedModule } from 'src/shared/shared.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from '../../strategies/local.strategy';
-import { JwtStrategy } from '../../strategies/jwt.strategy';
+import { LocalStrategy } from 'src/strategies/local.strategy';
+import { JwtStrategy } from 'src/strategies/jwt.strategy';
 import { APP_GUARD } from '@nestjs/core';
-import { RolesGuard } from '../../authorization/roles.guard';
-// import { OrdersModule } from 'src/orders/orders.module';
-import { Session, SessionSchema } from './session.schema';
+import { RolesGuard } from 'src/authorization/roles.guard';
+import { Session, SessionSchema } from 'src/modules/users/session.schema';
 import { HttpModule } from '@nestjs/axios';
 
 @Global()
@@ -29,12 +28,10 @@ import { HttpModule } from '@nestjs/axios';
         }),
         SharedModule,
         PassportModule,
-        // OrdersModule,
         HttpModule,
     ],
     providers: [
         UsersService,
-        // GoogleStrategy,
         LocalStrategy,
         JwtStrategy,
         {
