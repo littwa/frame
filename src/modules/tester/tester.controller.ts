@@ -68,7 +68,7 @@ export class TesterController {
     @ApiResponse({ status: 200, description: 'Return tester.' })
     @ApiResponse({ status: 404, description: 'Can not Execute.' })
     @ApiBearerAuth()
-    @Patch('execute/:testerId/:qwe?')
+    @Patch('execute/:testerId{/:qwe}')
     @UseGuards(JwtAuthGuard)
     @Roles([ERole.Admin, ERole.Customer])
     @UsePipes(new ValidationPipe({ whitelist: true }))
