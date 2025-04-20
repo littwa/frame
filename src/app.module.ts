@@ -20,7 +20,7 @@ import { TesterModule } from './modules/tester/tester.module';
     }),
     MongooseModule.forRoot(process.env.MONGO_URL),
     ServeStaticModule.forRoot({
-        rootPath: path.join(__dirname, '..', 'uploads'),
+      rootPath: path.join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',
     }),
     UsersModule,

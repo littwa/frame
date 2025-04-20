@@ -16,4 +16,9 @@ export enum EMediaType {
     Raw = 'raw'
 }
 
+export enum ETokenTypes {
+    Refresh = 'refresh',
+    Access = 'access',
+}
+
 export type MediaTypes = 'image' | 'video' |'auto' |'raw';

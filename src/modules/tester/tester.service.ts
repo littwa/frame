@@ -21,7 +21,7 @@ export class TesterService {
     };
 
     async createTester(param, query, body, req: IRequestExt) {
-        const newTester = await this.testerModel.create({ ...body, createByUser: req.user._id });
+        const newTester = await this.testerModel.create({ ...body, createByUser: req.user.uid });
         if (!newTester) throw new NotFoundException(`Can't create Tester`);
         console.log('newTester=', newTester);
         return newTester;

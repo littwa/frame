@@ -17,10 +17,10 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .addBearerAuth()
-    .setTitle('Sport')
-    .setDescription('The Sport API description')
+    .setTitle('Frame')
+    .setDescription('The Frame API description')
     .setVersion('0.0.1')
-    .addTag('sport')
+    .addTag('frame')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

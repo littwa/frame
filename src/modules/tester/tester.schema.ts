@@ -56,7 +56,7 @@ export class Tester extends Document {
     // customerId: Customer;
 
     //@Prop({ type: [CustomerSchema] })
-    // productsList: ICustomer[]; //  Сheck how it works  ????
+    // productsList: ICustomer[]; // Check how it works???
 }
 
 export const TesterSchema = SchemaFactory.createForClass(Tester);

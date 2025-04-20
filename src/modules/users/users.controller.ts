@@ -43,6 +43,7 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ParamIdDto } from 'src/shared/dto/common.dto';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { IRequestExt } from '../../shared/interfaces/auth.interfaces';
 
 
 @ApiTags('users')
@@ -192,7 +193,7 @@ export class UsersController {
     @Roles([ERole.Admin, ERole.Customer])
     @UsePipes(new ValidationPipe({ whitelist: true }))
     @HttpCode(HttpStatus.OK)
-    unfollow(@Request() req, @Body() body: UserFollowBodyDto) {
+    unfollow(@Request() req: IRequestExt, @Body() body: UserFollowBodyDto) {
         return this.userService.unfollow(req, body);
     }
 
@@ -219,12 +220,6 @@ export class UsersController {
     // @Roles(ERole.Admin)
     delCartProduct(@Request() req, @Param() param: CartProductUserParamDto) {
         return this.userService.delCartProduct(param, req);
-    }
-
-    @Get('local')
-    @UseGuards(AuthGuard('local'))
-    testAuthGuardLocal(@Request() req) {
-        return req.user;
     }
 
     @Get('get/user-customer-info')

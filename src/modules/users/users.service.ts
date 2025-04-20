@@ -17,8 +17,9 @@ import { Session, SessionDocument } from 'src/modules/users/session.schema';
 import { ConfigService } from '@nestjs/config';
 import { CommonService } from 'src/shared/services/common.service';
 import { PAGINATION_USERS_DEFAULT } from 'src/shared/constants/users.constants';
-import { ESortOrderBy } from 'src/shared/enums/common.enum';
+import { ESortOrderBy, ETokenTypes } from 'src/shared/enums/common.enum';
 import { EComposeType } from 'src/shared/enums/compose.enum';
+import { IRequestExt } from '../../shared/interfaces/auth.interfaces';
 
 @Injectable()
 export class UsersService {
@@ -324,7 +325,7 @@ export class UsersService {
 
   async addFavoriteProduct(productId: string, req) {
     const user = await this.userModel.findByIdAndUpdate(
-      req.user._id,
+      req.user.uid,
       { $push: { favorites: productId } },
       { new: true },
     );
@@ -334,7 +335,7 @@ export class UsersService {
 
   async delFavoriteProduct(productId: string, req) {
     const user = await this.userModel.findByIdAndUpdate(
-      req.user._id,
+      req.user.uid,
       { $pull: { favorites: productId } },
       { new: true },
     );
@@ -344,7 +345,7 @@ export class UsersService {
 
   async addCartProduct(param: CartProductUserParamDto, req) {
     const user = await this.userModel.findByIdAndUpdate(
-      req.user._id,
+      req.user.uid,
       {
         $push: {
           cart: {
@@ -361,7 +362,7 @@ export class UsersService {
 
   async delCartProduct(param: CartProductUserParamDto, req) {
     const user = await this.userModel.findByIdAndUpdate(
-      req.user._id,
+      req.user.uid,
       {
         $pull: {
           cart: {
@@ -377,14 +378,14 @@ export class UsersService {
   }
 
   async follow(req, body) {
-    const user = await this.userModel.findById(req.user._id).exec();
+    const user = await this.userModel.findById(req.user.uid).exec();
     if (!user.following.includes(body.followId)) {
       user.following.push(body.followId);
       await user.save();
 
       const follower = await this.userModel.findById(body.followId).exec();
-      if (!follower.followers.includes(req.user._id)) {
-        follower.followers.push(req.user._id);
+      if (!follower.followers.includes(req.user.uid)) {
+        follower.followers.push(req.user.uid);
         await follower.save();
       }
     }
@@ -393,16 +394,16 @@ export class UsersService {
     return (await user.populate('followers')).populate('following');
   }
 
-  async unfollow(req, body) {
+  async unfollow(req: IRequestExt, body) {
     const user = await this.userModel.findByIdAndUpdate(
-      req.user._id,
+      req.user.uid,
       { $pull: { following: body.followId } },
       { new: true },
     );
 
     const follower = await this.userModel.findByIdAndUpdate(
       body.followId,
-      { $pull: { followers: req.user._id } },
+      { $pull: { followers: req.user.uid } },
       { new: true },
     );
 
@@ -442,32 +443,38 @@ export class UsersService {
     };
   }
 
-  async getRefreshToken(req) {
-    if (!req.get('Authorization')) {
-      throw new UnauthorizedException('Not authorized Token');
-    }
+  async getRefreshToken(req: IRequestExt) {
 
-    // @ts-ignore
-    const token = req.get('Authorization' || '').slice(7);
-    console.log('token::Authorization: ', token);
+    const { uid, sid } = req.user;
 
-    const parsedToken = await this.jwtService.verify(token, {
-      secret: process.env.TOKEN_SECRET,
-    });
+    // if (!req.get('Authorization')) {
+    //   throw new UnauthorizedException('Not authorized Token');
+    // }
+    //
+    // const token = req.get('Authorization').slice(7);
+    // console.log('token::Authorization: ', token);
+    //
+    // const parsedToken = await this.jwtService.verify(token, {
+    //   secret: process.env.TOKEN_SECRET,
+    // });
+    //
+    // console.log('+++ :', parsedToken, req.user)
+    //
+    // if (!parsedToken) throw new UnauthorizedException('Not authorized');
 
-    if (!parsedToken) throw new UnauthorizedException('Not authorized');
+    const session = await this.sessionModel.findById(sid);
+    const user = await this.userModel.findById(uid);
 
-    const session = await this.sessionModel.findById(parsedToken.sid);
-    const user = await this.userModel.findById(parsedToken.uid);
+    console.log('55555', req.user, session, user);
 
     if (!session || !user || user._id.toString() !== session.uid.toString())
       throw new UnauthorizedException('Not authorized');
 
     const delSession = await this.sessionModel.findByIdAndDelete(
-      parsedToken.sid,
+      sid,
     );
 
-    const createSession = await this.createSessionUtility(parsedToken.uid);
+    const createSession = await this.createSessionUtility(uid);
     const newPairTokens = this.getPairTokensUtility(createSession, user);
 
     return newPairTokens;
@@ -481,6 +488,7 @@ export class UsersService {
         secret: process.env.TOKEN_SECRET,
         email: user.email,
         role: user.role,
+        token_type: ETokenTypes.Access,
       },
       { expiresIn: this.configService.get(this.accessTokenPath).exp },
     );
@@ -491,6 +499,7 @@ export class UsersService {
         secret: process.env.TOKEN_SECRET,
         email: user.email,
         role: user.role,
+        token_type: ETokenTypes.Refresh,
       },
       { expiresIn: this.configService.get(this.refreshTokenPath).exp },
     );
@@ -508,67 +517,67 @@ export class UsersService {
     });
   }
 
-  async googleLogin(req) {
-    if (!req.user) throw new UnauthorizedException('Not authorized');
+  // async googleLogin(req) {
+  //   if (!req.user) throw new UnauthorizedException('Not authorized');
+  //
+  //   let user = await this.userModel
+  //     .findOne({
+  //       email: req.user.email,
+  //       // role: ERole.Customer,
+  //       socialAuth: req.user.profile.provider,
+  //     })
+  //     .populate('followers')
+  //     .populate('following');
+  //   let isNew = false;
+  //   if (!user) {
+  //     user = await this.userModel.create({
+  //       email: req.user.email,
+  //       socialAuth: req.user.profile.provider,
+  //       firstName: req.user.firstName,
+  //       lastName: req.user.lastName,
+  //       role: ERole.Customer,
+  //       username: req.user.email.split('@')[0],
+  //       avatarURL: req.user.picture,
+  //       status: EStatus.NotRequiredVerification,
+  //       // customer: '60e416946e3053133891ad81', // dummy
+  //     });
+  //
+  //     isNew = true;
+  //   }
+  //
+  //   if (!user) throw new UnauthorizedException('Not authorized');
+  //
+  //   const userObjectId = user._id;
+  //
+  //   const createSession = await this.createSessionUtility(userObjectId);
+  //   const tokens = this.getPairTokensUtility(createSession, user);
+  //
+  //   return {
+  //     _id: user._id,
+  //     username: user.username,
+  //     email: user.email,
+  //     status: user.status,
+  //     role: user.role,
+  //     socialAuth: user.socialAuth,
+  //     avatarURL: user.avatarURL,
+  //     accessToken: tokens.accessToken,
+  //     refreshToken: tokens.refreshToken,
+  //     // isNew,
+  //     // tokens,
+  //   };
+  // }
 
-    let user = await this.userModel
-      .findOne({
-        email: req.user.email,
-        // role: ERole.Customer,
-        socialAuth: req.user.profile.provider,
-      })
-      .populate('followers')
-      .populate('following');
-    let isNew = false;
-    if (!user) {
-      user = await this.userModel.create({
-        email: req.user.email,
-        socialAuth: req.user.profile.provider,
-        firstName: req.user.firstName,
-        lastName: req.user.lastName,
-        role: ERole.Customer,
-        username: req.user.email.split('@')[0],
-        avatarURL: req.user.picture,
-        status: EStatus.NotRequiredVerification,
-        // customer: '60e416946e3053133891ad81', // dummy
-      });
-
-      isNew = true;
-    }
-
-    if (!user) throw new UnauthorizedException('Not authorized');
-
-    const userObjectId = user._id;
-
-    const createSession = await this.createSessionUtility(userObjectId);
-    const tokens = this.getPairTokensUtility(createSession, user);
-
-    return {
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      status: user.status,
-      role: user.role,
-      socialAuth: user.socialAuth,
-      avatarURL: user.avatarURL,
-      accessToken: tokens.accessToken,
-      refreshToken: tokens.refreshToken,
-      // isNew,
-      // tokens,
-    };
-  }
-
-  async verifyToken(authorization: string): Promise<{ [key: string]: any }> {
-    if (!authorization) {
-      throw new UnauthorizedException('Not authorized Token');
-    }
-
-    const token = authorization.slice(7);
-
-    return await this.jwtService.verify(token, {
-      secret: process.env.TOKEN_SECRET,
-    });
-  }
+  // async verifyToken(authorization: string): Promise<{ [key: string]: any }> {
+  //   if (!authorization) {
+  //     throw new UnauthorizedException('Not authorized Token');
+  //   }
+  //
+  //   const token = authorization.slice(7);
+  //
+  //   return await this.jwtService.verify(token, {
+  //     secret: process.env.TOKEN_SECRET,
+  //   });
+  // }
 
   decodeAnyToken(authorization: string): any {
     if (!authorization) {

@@ -6,7 +6,6 @@ import { User, UserSchema } from './user.schema';
 import { SharedModule } from 'src/shared/shared.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from 'src/strategies/local.strategy';
 import { JwtStrategy } from 'src/strategies/jwt.strategy';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from 'src/authorization/roles.guard';
@@ -32,7 +31,6 @@ import { HttpModule } from '@nestjs/axios';
     ],
     providers: [
         UsersService,
-        LocalStrategy,
         JwtStrategy,
         {
             provide: APP_GUARD,
