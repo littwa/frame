@@ -13,7 +13,7 @@ async function bootstrap() {
 
   const { httpAdapter } = app.get(HttpAdapterHost);
 
-  app.useGlobalFilters(new HttpExceptionFilter(httpAdapter)); // , new AllExceptionsFilter()
+  app.useGlobalFilters(new HttpExceptionFilter(httpAdapter)); // new AllExceptionsFilter()
 
   const config = new DocumentBuilder()
     .addBearerAuth()
