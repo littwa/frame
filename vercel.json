@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "src/dist/main.ts",
+      "src": "srcc/dist/main.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "src/dist/main.ts",
+      "dest": "srcc/dist/main.ts",
       "methods": ["GET", "POST", "PUT", "DELETE"]
     }
   ]
