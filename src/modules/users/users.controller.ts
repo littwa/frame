@@ -27,23 +27,23 @@ import {
     UsePipes,
     ValidationPipe,
 } from '@nestjs/common';
-import { UsersService } from 'src/modules/users/users.service';
-import { ERole } from 'src/shared/enums/role.enum';
-import { AuthGuard } from '@nestjs/passport';
-import { Roles } from 'src/authorization/roles.decorator';
-import { AnyFilesInterceptor, FileFieldsInterceptor } from '@nestjs/platform-express';
-import {
-    CartProductUserParamDto,
-    UserCustomerCreateDto,
-    UserFollowBodyDto,
-    UsersFindDto,
-    UsersFindDtoExtends,
-    UserUpdateDto,
-} from './dto/user.dto';
+// import { UsersService } from 'src/modules/users/users.service';
+// import { ERole } from 'src/shared/enums/role.enum';
+// import { AuthGuard } from '@nestjs/passport';
+// import { Roles } from 'src/authorization/roles.decorator';
+// import { AnyFilesInterceptor, FileFieldsInterceptor } from '@nestjs/platform-express';
+// import {
+//     CartProductUserParamDto,
+//     UserCustomerCreateDto,
+//     UserFollowBodyDto,
+//     UsersFindDto,
+//     UsersFindDtoExtends,
+//     UserUpdateDto,
+// } from './dto/user.dto';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ParamIdDto } from 'src/shared/dto/common.dto';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
-import { IRequestExt } from '../../shared/interfaces/auth.interfaces';
+// import { ParamIdDto } from 'src/shared/dto/common.dto';
+// import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+// import { IRequestExt } from '../../shared/interfaces/auth.interfaces';
 
 
 @ApiTags('users')
