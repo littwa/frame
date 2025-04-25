@@ -74,29 +74,29 @@ export class UsersService {
   }
 
   async updateUser(param, body, file: Express.Multer.File) {
-    // if (file && file.mimetype.split('/')[0] !== EComposeType.Image) {
-    //   throw new BadRequestException('Wrong uploaded type file');
-    // }
-    //
-    // const user = await this.userModel.findById(param.id).exec();
-    // const image = await this.commonService.cloudinaryHost(file);
-    // if (image && user.public_id) {
-    //   await this.commonService.deleteFromCloudinary(
-    //     user.public_id,
-    //     EComposeType.Image,
-    //   );
-    // }
-    //
-    // for (let key in body) {
-    //   user[key] = body[key];
-    // }
-    //
-    // image?.secure_url && (user.avatarURL = image?.secure_url);
-    // image?.public_id && (user.public_id = image?.public_id);
-    //
-    // user.save();
-    //
-    // return user;
+    if (file && file.mimetype.split('/')[0] !== EComposeType.Image) {
+      throw new BadRequestException('Wrong uploaded type file');
+    }
+
+    const user = await this.userModel.findById(param.id).exec();
+    const image = await this.commonService.cloudinaryHost(file);
+    if (image && user.public_id) {
+      await this.commonService.deleteFromCloudinary(
+        user.public_id,
+        EComposeType.Image,
+      );
+    }
+
+    for (let key in body) {
+      user[key] = body[key];
+    }
+
+    image?.secure_url && (user.avatarURL = image?.secure_url);
+    image?.public_id && (user.public_id = image?.public_id);
+
+    user.save();
+
+    return user;
   }
 
   async signOutUser(parsedToken) {
