@@ -15,10 +15,32 @@ import { HttpModule } from '@nestjs/axios';
 @Global()
 @Module({
     imports: [
-        MongooseModule.forFeature([
-            { name: User.name, schema: UserSchema },
-            { name: Session.name, schema: SessionSchema },
-        ]),
+        // MongooseModule.forFeature([
+        //     { name: User.name, schema: UserSchema },
+        //     { name: Session.name, schema: SessionSchema },
+        // ]),
+      MongooseModule.forFeatureAsync([
+          {
+              name: User.name,
+              useFactory: () => {
+                  const schema = UserSchema;
+                  schema.pre('save', function () {
+                      console.log('Hello from pre save UserSchema');
+                  });
+                  return schema;
+              },
+          },
+          {
+              name: Session.name,
+              useFactory: () => {
+                  const schema = SessionSchema;
+                  schema.pre('save', function () {
+                      console.log('Hello from pre save SessionSchema');
+                  });
+                  return schema;
+              },
+          },
+      ]),
         JwtModule.registerAsync({
             useFactory: () => ({
                 secret: process.env.TOKEN_SECRET,
