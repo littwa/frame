@@ -23,8 +23,9 @@ import { TesterModule } from './modules/tester/tester.module';
       rootPath: path.join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',
     }),
-    UsersModule,
-   TesterModule],
+   //  UsersModule,
+   // TesterModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
