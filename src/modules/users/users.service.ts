@@ -26,15 +26,15 @@ export class UsersService {
   public refreshTokenPath = 'jwtExpires._30days'; // 'jwtExpires._100Seconds';  // 'jwtExpires._30days';
   public accessTokenPath = 'jwtExpires._1hour'; // 'jwtExpires._30Seconds'; // 'jwtExpires._60Seconds'; // 'jwtExpires._1hour'; //
 
-  constructor(
-    @InjectModel(Session.name) public sessionModel: Model<SessionDocument>,
-    @InjectModel(User.name) public userModel: Model<UserDocument>,
-    private jwtService: JwtService,
-    public configService: ConfigService,
-    @Inject('UseFactoryTest') public configFactory: any,
-    @Inject('UseClassTest') public useClassTest: any,
-    private commonService: CommonService,
-  ) {}
+  // constructor(
+  //   @InjectModel(Session.name) public sessionModel: Model<SessionDocument>,
+  //   @InjectModel(User.name) public userModel: Model<UserDocument>,
+  //   private jwtService: JwtService,
+  //   public configService: ConfigService,
+  //   @Inject('UseFactoryTest') public configFactory: any,
+  //   @Inject('UseClassTest') public useClassTest: any,
+  //   private commonService: CommonService,
+  // ) {}
 
   // async createUserCustomer(
   //   createUserCustomerDto: UserCustomerCreateDto, file: Express.Multer.File

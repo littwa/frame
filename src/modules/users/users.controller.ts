@@ -49,9 +49,9 @@ import { IRequestExt } from '../../shared/interfaces/auth.interfaces';
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
-    constructor(
-        private readonly userService: UsersService,
-    ) {}
+    // constructor(
+    //     private readonly userService: UsersService,
+    // ) {}
 
     // @ApiOperation({ summary: 'Create User' })
     // @ApiResponse({ status: 200, description: 'Return ...' })
