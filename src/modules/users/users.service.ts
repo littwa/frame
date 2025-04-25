@@ -118,42 +118,42 @@ export class UsersService {
   }
 
   async getUserById(id) {
-    return this.userModel.findById(id, {
-      status: 0,
-      password: 0,
-      cart: 0,
-      orders: 0,
-      watchedProducts: 0,
-    });
+    // return this.userModel.findById(id, {
+    //   status: 0,
+    //   password: 0,
+    //   cart: 0,
+    //   orders: 0,
+    //   watchedProducts: 0,
+    // });
   }
 
   async getUserFollowersById(id) {
-    return (
-      await this.userModel.findById(id, { followers: 1 }).populate('followers')
-    ).followers;
+    // return (
+    //   await this.userModel.findById(id, { followers: 1 }).populate('followers')
+    // ).followers;
   }
 
   async getUserFollowingById(id) {
-    return (
-      await this.userModel.findById(id, { following: 1 }).populate('following')
-    ).following;
+    // return (
+    //   await this.userModel.findById(id, { following: 1 }).populate('following')
+    // ).following;
   }
 
   async getCurrentUser({ _id }) {
-    const infoUser = await this.userModel
-      .findOne(
-        {
-          _id,
-          // role: ERole.Customer,
-        },
-        { password: 0 },
-      )
-      .populate('followers')
-      .populate('following'); // .populate('customer');
-    if (!infoUser) throw new BadRequestException('User was not found');
-    const { password, verificationCode, __v, ...userDtoInfo } =
-      infoUser.toObject();
-    return userDtoInfo;
+    // const infoUser = await this.userModel
+    //   .findOne(
+    //     {
+    //       _id,
+    //       // role: ERole.Customer,
+    //     },
+    //     { password: 0 },
+    //   )
+    //   .populate('followers')
+    //   .populate('following'); // .populate('customer');
+    // if (!infoUser) throw new BadRequestException('User was not found');
+    // const { password, verificationCode, __v, ...userDtoInfo } =
+    //   infoUser.toObject();
+    // return userDtoInfo;
   }
 
   async getUsers(param, query, req) {
@@ -325,123 +325,123 @@ export class UsersService {
   }
 
   async addFavoriteProduct(productId: string, req) {
-    const user = await this.userModel.findByIdAndUpdate(
-      req.user.uid,
-      { $push: { favorites: productId } },
-      { new: true },
-    );
-
-    return user;
+    // const user = await this.userModel.findByIdAndUpdate(
+    //   req.user.uid,
+    //   { $push: { favorites: productId } },
+    //   { new: true },
+    // );
+    //
+    // return user;
   }
 
   async delFavoriteProduct(productId: string, req) {
-    const user = await this.userModel.findByIdAndUpdate(
-      req.user.uid,
-      { $pull: { favorites: productId } },
-      { new: true },
-    );
-
-    return user;
+    // const user = await this.userModel.findByIdAndUpdate(
+    //   req.user.uid,
+    //   { $pull: { favorites: productId } },
+    //   { new: true },
+    // );
+    //
+    // return user;
   }
 
   async addCartProduct(param: CartProductUserParamDto, req) {
-    const user = await this.userModel.findByIdAndUpdate(
-      req.user.uid,
-      {
-        $push: {
-          cart: {
-            productId: new mongoose.Types.ObjectId(param.productId),
-            amount: param.amount,
-          },
-        },
-      },
-      { new: true },
-    );
-
-    return user;
+    // const user = await this.userModel.findByIdAndUpdate(
+    //   req.user.uid,
+    //   {
+    //     $push: {
+    //       cart: {
+    //         productId: new mongoose.Types.ObjectId(param.productId),
+    //         amount: param.amount,
+    //       },
+    //     },
+    //   },
+    //   { new: true },
+    // );
+    //
+    // return user;
   }
 
   async delCartProduct(param: CartProductUserParamDto, req) {
-    const user = await this.userModel.findByIdAndUpdate(
-      req.user.uid,
-      {
-        $pull: {
-          cart: {
-            productId: new mongoose.Types.ObjectId(param.productId),
-            amount: param.amount,
-          },
-        },
-      },
-      { new: true },
-    );
-
-    return user;
+    // const user = await this.userModel.findByIdAndUpdate(
+    //   req.user.uid,
+    //   {
+    //     $pull: {
+    //       cart: {
+    //         productId: new mongoose.Types.ObjectId(param.productId),
+    //         amount: param.amount,
+    //       },
+    //     },
+    //   },
+    //   { new: true },
+    // );
+    //
+    // return user;
   }
 
   async follow(req, body) {
-    const user = await this.userModel.findById(req.user.uid).exec();
-    if (!user.following.includes(body.followId)) {
-      user.following.push(body.followId);
-      await user.save();
-
-      const follower = await this.userModel.findById(body.followId).exec();
-      if (!follower.followers.includes(req.user.uid)) {
-        follower.followers.push(req.user.uid);
-        await follower.save();
-      }
-    }
-
-    // const populatedFollowers = await user.populate('followers');
-    return (await user.populate('followers')).populate('following');
+    // const user = await this.userModel.findById(req.user.uid).exec();
+    // if (!user.following.includes(body.followId)) {
+    //   user.following.push(body.followId);
+    //   await user.save();
+    //
+    //   const follower = await this.userModel.findById(body.followId).exec();
+    //   if (!follower.followers.includes(req.user.uid)) {
+    //     follower.followers.push(req.user.uid);
+    //     await follower.save();
+    //   }
+    // }
+    //
+    // // const populatedFollowers = await user.populate('followers');
+    // return (await user.populate('followers')).populate('following');
   }
 
   async unfollow(req: IRequestExt, body) {
-    const user = await this.userModel.findByIdAndUpdate(
-      req.user.uid,
-      { $pull: { following: body.followId } },
-      { new: true },
-    );
-
-    const follower = await this.userModel.findByIdAndUpdate(
-      body.followId,
-      { $pull: { followers: req.user.uid } },
-      { new: true },
-    );
-
-    return (await user.populate('followers')).populate('following');
+    // const user = await this.userModel.findByIdAndUpdate(
+    //   req.user.uid,
+    //   { $pull: { following: body.followId } },
+    //   { new: true },
+    // );
+    //
+    // const follower = await this.userModel.findByIdAndUpdate(
+    //   body.followId,
+    //   { $pull: { followers: req.user.uid } },
+    //   { new: true },
+    // );
+    //
+    // return (await user.populate('followers')).populate('following');
   }
 
   async signIn(signInDto) {
-    const { email, password } = signInDto;
-
-    const user = await this.userModel
-      .findOne({ email }) // , role: ERole.Customer
-      .populate('followers')
-      .populate('following');
-
-    if (!user) throw new BadRequestException('User was not found');
-    if (user.status !== 'Verified')
-      throw new BadRequestException('User not verified');
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordValid) throw new BadRequestException('Password wrong');
-
-    const userObjectId = user._id;
-
-    const createSession = await this.createSessionUtility(userObjectId);
-    const tokens = this.getPairTokensUtility(createSession, user);
-
-    return {
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      status: user.status,
-      role: user.role,
-      accessToken: tokens.accessToken,
-      refreshToken: tokens.refreshToken,
-      // tokens,
-    };
+    // const { email, password } = signInDto;
+    //
+    // const user = await this.userModel
+    //   .findOne({ email }) // , role: ERole.Customer
+    //   .populate('followers')
+    //   .populate('following');
+    //
+    // if (!user) throw new BadRequestException('User was not found');
+    // if (user.status !== 'Verified')
+    //   throw new BadRequestException('User not verified');
+    //
+    // const isPasswordValid = await bcrypt.compare(password, user.password);
+    //
+    // if (!isPasswordValid) throw new BadRequestException('Password wrong');
+    //
+    // const userObjectId = user._id;
+    //
+    // const createSession = await this.createSessionUtility(userObjectId);
+    // const tokens = this.getPairTokensUtility(createSession, user);
+    //
+    // return {
+    //   _id: user._id,
+    //   username: user.username,
+    //   email: user.email,
+    //   status: user.status,
+    //   role: user.role,
+    //   accessToken: tokens.accessToken,
+    //   refreshToken: tokens.refreshToken,
+    //   // tokens,
+    // };
   }
 
   async getRefreshToken(req: IRequestExt) {
@@ -482,30 +482,30 @@ export class UsersService {
   }
 
   getPairTokensUtility = (session, user) => {
-    const accessToken = this.jwtService.sign(
-      {
-        sid: session._id,
-        uid: session.uid,
-        secret: process.env.TOKEN_SECRET,
-        email: user.email,
-        role: user.role,
-        token_type: ETokenTypes.Access,
-      },
-      { expiresIn: this.configService.get(this.accessTokenPath).exp },
-    );
-    const refreshToken = this.jwtService.sign(
-      {
-        sid: session._id,
-        uid: session.uid,
-        secret: process.env.TOKEN_SECRET,
-        email: user.email,
-        role: user.role,
-        token_type: ETokenTypes.Refresh,
-      },
-      { expiresIn: this.configService.get(this.refreshTokenPath).exp },
-    );
-
-    return { accessToken, refreshToken };
+    // const accessToken = this.jwtService.sign(
+    //   {
+    //     sid: session._id,
+    //     uid: session.uid,
+    //     secret: process.env.TOKEN_SECRET,
+    //     email: user.email,
+    //     role: user.role,
+    //     token_type: ETokenTypes.Access,
+    //   },
+    //   { expiresIn: this.configService.get(this.accessTokenPath).exp },
+    // );
+    // const refreshToken = this.jwtService.sign(
+    //   {
+    //     sid: session._id,
+    //     uid: session.uid,
+    //     secret: process.env.TOKEN_SECRET,
+    //     email: user.email,
+    //     role: user.role,
+    //     token_type: ETokenTypes.Refresh,
+    //   },
+    //   { expiresIn: this.configService.get(this.refreshTokenPath).exp },
+    // );
+    //
+    // return { accessToken, refreshToken };
   };
 
   async createSessionUtility(uid) {
@@ -581,77 +581,77 @@ export class UsersService {
   // }
 
   decodeAnyToken(authorization: string): any {
-    if (!authorization) {
-      throw new BadRequestException('No authorization token to parse');
-    }
-
-    const token = authorization.slice(7);
-
-    return this.jwtService.decode(token, { complete: true });
+    // if (!authorization) {
+    //   throw new BadRequestException('No authorization token to parse');
+    // }
+    //
+    // const token = authorization.slice(7);
+    //
+    // return this.jwtService.decode(token, { complete: true });
   }
 
   async test(body, param, query, file): Promise<any> {
-    // console.log(1100033, this.userModel.estimatedDocumentCount());
-    //console.log(1100044, this.userModel.count({ role: 'customer' }));
-    // const f = await this.userModel.count();
-    // const f = await this.userModel.countDocuments();
-    // const f = await this.userModel.estimatedDocumentCount();
-    // const avatarURL = files && this.commonService.multerFactory(files)[0];
-    // console.log('body::: ', body);
-    // console.log('param::: ', param);
-    // console.log('query::: ', query);
-    // console.log('file::: ', files[0]);
-    // console.log('bbb::::  ', files[0].buffer.toString('base64'))
-
-    cloudinary.v2.config({
-      cloud_name: 'dweey9w3n',
-      api_key: '581476537898735',
-      api_secret: '5E00uGGPdOMvucu8o3rtRB8oBMY',
-      secure: true,
-    });
-
-    const form: FormData = new FormData();
-    form.append('file', file); // .buffer.toString('base64')
-
-    // cloudinary.v2.uploader.upload(files[0]).then(res=>console.log(11111111, res));
-
-    console.log('file::: ', file);
-    let response;
-
-    try {
-      // response = await cloudinary.v2.uploader.upload('data:image/png;base64,' + file.buffer.toString('base64'))
-      //     // @ts-ignore
-      //     response = await axios({
-      //         method: "POST",
-      //         url: IMGBB_UPLOAD_URL,
-      //         data: form,
-      //         headers: { "Content-Type": "multipart/form-data" },
-      //     })
-      //
-      //     console.log('imgbb_axios===================== ', response.data);
-      //
-      //
-    } catch (err) {
-      console.log(1111111, err);
-    }
-
-    console.log('response::: ', response);
-
-    // const f = await this.userModel.find().sort({ _id: -1 }).limit(1);
-    // const f = await this.userModel.find().sort({ $natural: -1 }).limit(1);
-    // const list = await this.commonService.getFileListing();
-    // let coll = db.collection('collection_name');
-    // coll.count().then((count) => {
-    //   console.log(count);
+    // // console.log(1100033, this.userModel.estimatedDocumentCount());
+    // //console.log(1100044, this.userModel.count({ role: 'customer' }));
+    // // const f = await this.userModel.count();
+    // // const f = await this.userModel.countDocuments();
+    // // const f = await this.userModel.estimatedDocumentCount();
+    // // const avatarURL = files && this.commonService.multerFactory(files)[0];
+    // // console.log('body::: ', body);
+    // // console.log('param::: ', param);
+    // // console.log('query::: ', query);
+    // // console.log('file::: ', files[0]);
+    // // console.log('bbb::::  ', files[0].buffer.toString('base64'))
+    //
+    // cloudinary.v2.config({
+    //   cloud_name: 'dweey9w3n',
+    //   api_key: '581476537898735',
+    //   api_secret: '5E00uGGPdOMvucu8o3rtRB8oBMY',
+    //   secure: true,
     // });
-
-    return {
-      response,
-      // body,
-      // res: response.data
-      // userModelFindCount: this.userModel.find().count(),
-      // list,
-    };
+    //
+    // const form: FormData = new FormData();
+    // form.append('file', file); // .buffer.toString('base64')
+    //
+    // // cloudinary.v2.uploader.upload(files[0]).then(res=>console.log(11111111, res));
+    //
+    // console.log('file::: ', file);
+    // let response;
+    //
+    // try {
+    //   // response = await cloudinary.v2.uploader.upload('data:image/png;base64,' + file.buffer.toString('base64'))
+    //   //     // @ts-ignore
+    //   //     response = await axios({
+    //   //         method: "POST",
+    //   //         url: IMGBB_UPLOAD_URL,
+    //   //         data: form,
+    //   //         headers: { "Content-Type": "multipart/form-data" },
+    //   //     })
+    //   //
+    //   //     console.log('imgbb_axios===================== ', response.data);
+    //   //
+    //   //
+    // } catch (err) {
+    //   console.log(1111111, err);
+    // }
+    //
+    // console.log('response::: ', response);
+    //
+    // // const f = await this.userModel.find().sort({ _id: -1 }).limit(1);
+    // // const f = await this.userModel.find().sort({ $natural: -1 }).limit(1);
+    // // const list = await this.commonService.getFileListing();
+    // // let coll = db.collection('collection_name');
+    // // coll.count().then((count) => {
+    // //   console.log(count);
+    // // });
+    //
+    // return {
+    //   response,
+    //   // body,
+    //   // res: response.data
+    //   // userModelFindCount: this.userModel.find().count(),
+    //   // list,
+    // };
   }
 
   //=========================verifycation======================================
