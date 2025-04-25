@@ -55,7 +55,7 @@ export class UsersService {
     const image = await this.commonService.cloudinaryHost(file);
 
     user = await this.userModel.create({
-      ...createUserCustomerDto,
+      // ...createUserCustomerDto,
       // password: hashPassword,
       // username: createUserCustomerDto.email.split('@')[0],
       // // verificationCode: code,
