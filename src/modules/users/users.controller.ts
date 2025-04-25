@@ -50,7 +50,7 @@ import { IRequestExt } from '../../shared/interfaces/auth.interfaces';
 @Controller('users')
 export class UsersController {
     constructor(
-        private readonly userService: UsersService,
+        // private readonly userService: UsersService,
     ) {}
 
     // @ApiOperation({ summary: 'Create User' })
