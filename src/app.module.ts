@@ -12,17 +12,17 @@ import { TesterModule } from './modules/tester/tester.module';
 
 @Module({
   imports: [
-    PassportModule,
-    ConfigModule.forRoot({
-      load: [configuration, () => ({ q: 1 })],
-      isGlobal: true,
-      envFilePath: ['.env'], // not necessary
-    }),
-    MongooseModule.forRoot(process.env.MONGO_URL),
-    ServeStaticModule.forRoot({
-      rootPath: path.join(__dirname, '..', 'uploads'),
-      serveRoot: '/uploads',
-    }),
+    // PassportModule,
+    // ConfigModule.forRoot({
+    //   load: [configuration, () => ({ q: 1 })],
+    //   isGlobal: true,
+    //   envFilePath: ['.env'], // not necessary
+    // }),
+    // MongooseModule.forRoot(process.env.MONGO_URL),
+    // ServeStaticModule.forRoot({
+    //   rootPath: path.join(__dirname, '..', 'uploads'),
+    //   serveRoot: '/uploads',
+    // }),
    //  UsersModule,
    // TesterModule
   ],
