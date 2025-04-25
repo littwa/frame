@@ -54,16 +54,16 @@ export class UsersService {
 
     const image = await this.commonService.cloudinaryHost(file);
 
-    user = await this.userModel.create({
-      // ...createUserCustomerDto,
-      // password: hashPassword,
-      // username: createUserCustomerDto.email.split('@')[0],
-      // // verificationCode: code,
-      // status: EStatus.Verified, // EStatus.NotVerified,
-      // dateCreated: Date.now(),
-      // ...(image?.secure_url && { avatarURL: image?.secure_url }),
-      // ...(image?.public_id && { public_id: image?.public_id })
-    });
+    // user = await this.userModel.create({
+    //   ...createUserCustomerDto,
+    //   password: hashPassword,
+    //   username: createUserCustomerDto.email.split('@')[0],
+    //   // verificationCode: code,
+    //   status: EStatus.Verified, // EStatus.NotVerified,
+    //   dateCreated: Date.now(),
+    //   ...(image?.secure_url && { avatarURL: image?.secure_url }),
+    //   ...(image?.public_id && { public_id: image?.public_id })
+    // });
 
     // this.emailService.sendUserConfirmation(user.email, user.verificationCode);
 
