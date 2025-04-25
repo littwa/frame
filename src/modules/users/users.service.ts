@@ -28,7 +28,7 @@ export class UsersService {
 
   constructor(
     @InjectModel(Session.name) public sessionModel: Model<SessionDocument>,
-    @InjectModel(User.name) public userModel: Model<UserDocument>,
+    // @InjectModel(User.name) public userModel: Model<UserDocument>,
     private jwtService: JwtService,
     public configService: ConfigService,
     @Inject('UseFactoryTest') public configFactory: any,
