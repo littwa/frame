@@ -38,6 +38,6 @@ import { HttpModule } from '@nestjs/axios';
         },
     ],
     controllers: [UsersController],
-    exports: [UsersService, MongooseModule], //
+    exports: [UsersService, MongooseModule],
 })
 export class UsersModule {}
