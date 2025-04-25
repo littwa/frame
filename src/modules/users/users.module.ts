@@ -9,7 +9,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from 'src/strategies/jwt.strategy';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from 'src/authorization/roles.guard';
-import { Session, SessionSchema } from 'src/modules/users/session.schema';
+// import { Session, SessionSchema } from 'src/modules/users/session.schema';
 import { HttpModule } from '@nestjs/axios';
 
 @Global()
@@ -19,28 +19,28 @@ import { HttpModule } from '@nestjs/axios';
             { name: User.name, schema: UserSchema },
             // { name: Session.name, schema: SessionSchema },
         ]),
-      MongooseModule.forFeatureAsync([
-          // {
-          //     name: User.name,
-          //     useFactory: () => {
-          //         const schema = UserSchema;
-          //         schema.pre('save', function () {
-          //             console.log('Hello from pre save UserSchema');
-          //         });
-          //         return schema;
-          //     },
-          // },
-          // {
-          //     name: Session.name,
-          //     useFactory: () => {
-          //         const schema = SessionSchema;
-          //         schema.pre('save', function () {
-          //             console.log('Hello from pre save SessionSchema');
-          //         });
-          //         return schema;
-          //     },
-          // },
-      ]),
+      // MongooseModule.forFeatureAsync([
+      //     // {
+      //     //     name: User.name,
+      //     //     useFactory: () => {
+      //     //         const schema = UserSchema;
+      //     //         schema.pre('save', function () {
+      //     //             console.log('Hello from pre save UserSchema');
+      //     //         });
+      //     //         return schema;
+      //     //     },
+      //     // },
+      //     // {
+      //     //     name: Session.name,
+      //     //     useFactory: () => {
+      //     //         const schema = SessionSchema;
+      //     //         schema.pre('save', function () {
+      //     //             console.log('Hello from pre save SessionSchema');
+      //     //         });
+      //     //         return schema;
+      //     //     },
+      //     // },
+      // ]),
         JwtModule.registerAsync({
             useFactory: () => ({
                 secret: process.env.TOKEN_SECRET,

@@ -13,7 +13,7 @@ import { User, UserDocument } from 'src/modules/users/user.schema';
 import { ERole, EStatus } from 'src/shared/enums/role.enum';
 import { JwtService } from '@nestjs/jwt';
 import { CartProductUserParamDto, UserCustomerCreateDto } from './dto/user.dto';
-import { Session, SessionDocument } from 'src/modules/users/session.schema';
+// import { Session, SessionDocument } from 'src/modules/users/session.schema';
 import { ConfigService } from '@nestjs/config';
 import { CommonService } from 'src/shared/services/common.service';
 import { PAGINATION_USERS_DEFAULT } from 'src/shared/constants/users.constants';
