@@ -13,7 +13,7 @@ import { User, UserDocument } from 'src/modules/users/user.schema';
 import { ERole, EStatus } from 'src/shared/enums/role.enum';
 import { JwtService } from '@nestjs/jwt';
 import { CartProductUserParamDto, UserCustomerCreateDto } from './dto/user.dto';
-// import { Session, SessionDocument } from 'src/modules/users/session.schema';
+import { Session, SessionDocument } from 'src/modules/users/session.schema';
 import { ConfigService } from '@nestjs/config';
 import { CommonService } from 'src/shared/services/common.service';
 import { PAGINATION_USERS_DEFAULT } from 'src/shared/constants/users.constants';
@@ -27,7 +27,7 @@ export class UsersService {
   public accessTokenPath = 'jwtExpires._1hour'; // 'jwtExpires._30Seconds'; // 'jwtExpires._60Seconds'; // 'jwtExpires._1hour'; //
 
   constructor(
-    // @InjectModel(Session.name) public sessionModel: Model<SessionDocument>,
+    @InjectModel(Session.name) public sessionModel: Model<SessionDocument>,
     @InjectModel(User.name) public userModel: Model<UserDocument>,
     private jwtService: JwtService,
     public configService: ConfigService,
@@ -54,16 +54,16 @@ export class UsersService {
 
     const image = await this.commonService.cloudinaryHost(file);
 
-    // user = await this.userModel.create({
-    //   ...createUserCustomerDto,
-    //   password: hashPassword,
-    //   username: createUserCustomerDto.email.split('@')[0],
-    //   // verificationCode: code,
-    //   status: EStatus.Verified, // EStatus.NotVerified,
-    //   dateCreated: Date.now(),
-    //   ...(image?.secure_url && { avatarURL: image?.secure_url }),
-    //   ...(image?.public_id && { public_id: image?.public_id })
-    // });
+    user = await this.userModel.create({
+      ...createUserCustomerDto,
+      password: hashPassword,
+      username: createUserCustomerDto.email.split('@')[0],
+      // verificationCode: code,
+      status: EStatus.Verified, // EStatus.NotVerified,
+      dateCreated: Date.now(),
+      ...(image?.secure_url && { avatarURL: image?.secure_url }),
+      ...(image?.public_id && { public_id: image?.public_id })
+    });
 
     // this.emailService.sendUserConfirmation(user.email, user.verificationCode);
 
@@ -100,13 +100,13 @@ export class UsersService {
   }
 
   async signOutUser(parsedToken) {
-    // const deletedSession = await this.sessionModel.findByIdAndDelete(
-    //   parsedToken.sid,
-    // );
-    // if (!deletedSession) {
-    //   throw new BadRequestException('No current session');
-    // }
-    // return { req: 'logOutUser Success' };
+    const deletedSession = await this.sessionModel.findByIdAndDelete(
+      parsedToken.sid,
+    );
+    if (!deletedSession) {
+      throw new BadRequestException('No current session');
+    }
+    return { req: 'logOutUser Success' };
   }
 
   async getInfoUserCustomer({ _id }) {
@@ -445,40 +445,40 @@ export class UsersService {
   }
 
   async getRefreshToken(req: IRequestExt) {
+
+    const { uid, sid } = req.user;
+
+    // if (!req.get('Authorization')) {
+    //   throw new UnauthorizedException('Not authorized Token');
+    // }
     //
-    // const { uid, sid } = req.user;
+    // const token = req.get('Authorization').slice(7);
+    // console.log('token::Authorization: ', token);
     //
-    // // if (!req.get('Authorization')) {
-    // //   throw new UnauthorizedException('Not authorized Token');
-    // // }
-    // //
-    // // const token = req.get('Authorization').slice(7);
-    // // console.log('token::Authorization: ', token);
-    // //
-    // // const parsedToken = await this.jwtService.verify(token, {
-    // //   secret: process.env.TOKEN_SECRET,
-    // // });
-    // //
-    // // console.log('+++ :', parsedToken, req.user)
-    // //
-    // // if (!parsedToken) throw new UnauthorizedException('Not authorized');
+    // const parsedToken = await this.jwtService.verify(token, {
+    //   secret: process.env.TOKEN_SECRET,
+    // });
     //
-    // const session = await this.sessionModel.findById(sid);
-    // const user = await this.userModel.findById(uid);
+    // console.log('+++ :', parsedToken, req.user)
     //
-    // console.log('55555', req.user, session, user);
-    //
-    // if (!session || !user || user._id.toString() !== session.uid.toString())
-    //   throw new UnauthorizedException('Not authorized');
-    //
-    // const delSession = await this.sessionModel.findByIdAndDelete(
-    //   sid,
-    // );
-    //
-    // const createSession = await this.createSessionUtility(uid);
-    // const newPairTokens = this.getPairTokensUtility(createSession, user);
-    //
-    // return newPairTokens;
+    // if (!parsedToken) throw new UnauthorizedException('Not authorized');
+
+    const session = await this.sessionModel.findById(sid);
+    const user = await this.userModel.findById(uid);
+
+    console.log('55555', req.user, session, user);
+
+    if (!session || !user || user._id.toString() !== session.uid.toString())
+      throw new UnauthorizedException('Not authorized');
+
+    const delSession = await this.sessionModel.findByIdAndDelete(
+      sid,
+    );
+
+    const createSession = await this.createSessionUtility(uid);
+    const newPairTokens = this.getPairTokensUtility(createSession, user);
+
+    return newPairTokens;
   }
 
   getPairTokensUtility = (session, user) => {
@@ -509,13 +509,13 @@ export class UsersService {
   };
 
   async createSessionUtility(uid) {
-    // const expRefreshToken =
-    //   Date.now() + this.configService.get(this.refreshTokenPath).expIncrement;
-    //
-    // return await this.sessionModel.create({
-    //   uid,
-    //   expRefreshToken,
-    // });
+    const expRefreshToken =
+      Date.now() + this.configService.get(this.refreshTokenPath).expIncrement;
+
+    return await this.sessionModel.create({
+      uid,
+      expRefreshToken,
+    });
   }
 
   // async googleLogin(req) {
