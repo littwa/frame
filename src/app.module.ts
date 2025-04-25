@@ -30,12 +30,3 @@ import { AppService } from './app.service';
   providers: [AppService],
 })
 export class AppModule {}
-
-
-
-//   "dotenv": "^16.5.0",
-//   "mongoose": "^8.13.2",
-//   "passport": "^0.7.0",
-//   "passport-jwt": "^4.0.1",
-//   "passport-local": "^1.0.0",
-//   "sharp": "^0.34.1"
