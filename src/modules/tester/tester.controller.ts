@@ -79,7 +79,7 @@ export class TesterController {
         @Query() query: ExecuteTesterQueryDto,
         @Req() req: IRequestExt,
     ) {
-        console.log('query=', query);
+        console.log('query==', query);
         console.log('param= ', param);
         console.log('body=', body);
         console.log('req.user=', req.user);
