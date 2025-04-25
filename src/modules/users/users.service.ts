@@ -38,65 +38,65 @@ export class UsersService {
 
   async createUserCustomer(
     createUserCustomerDto: UserCustomerCreateDto, file: Express.Multer.File
-  ): Promise<object>{
-
-    let user = await this.userModel.findOne({
-      email: createUserCustomerDto.email,
-      role: ERole.Customer,
-    });
-
-    if (user)
-      throw new BadRequestException(
-        'User customer with current email is registered',
-      );
-
-    const hashPassword = await bcrypt.hash(createUserCustomerDto.password, 5);
-
-    const image = await this.commonService.cloudinaryHost(file);
-
-    user = await this.userModel.create({
-      ...createUserCustomerDto,
-      password: hashPassword,
-      username: createUserCustomerDto.email.split('@')[0],
-      // verificationCode: code,
-      status: EStatus.Verified, // EStatus.NotVerified,
-      dateCreated: Date.now(),
-      ...(image?.secure_url && { avatarURL: image?.secure_url }),
-      ...(image?.public_id && { public_id: image?.public_id })
-    });
-
-    // this.emailService.sendUserConfirmation(user.email, user.verificationCode);
-
-    const { password, verificationCode, __v, ...userDtoReverse } =
-      user.toObject();
-
-    return userDtoReverse;
+  ){
+  // : Promise<object>
+  //   let user = await this.userModel.findOne({
+  //     email: createUserCustomerDto.email,
+  //     role: ERole.Customer,
+  //   });
+  //
+  //   if (user)
+  //     throw new BadRequestException(
+  //       'User customer with current email is registered',
+  //     );
+  //
+  //   const hashPassword = await bcrypt.hash(createUserCustomerDto.password, 5);
+  //
+  //   const image = await this.commonService.cloudinaryHost(file);
+  //
+  //   user = await this.userModel.create({
+  //     ...createUserCustomerDto,
+  //     password: hashPassword,
+  //     username: createUserCustomerDto.email.split('@')[0],
+  //     // verificationCode: code,
+  //     status: EStatus.Verified, // EStatus.NotVerified,
+  //     dateCreated: Date.now(),
+  //     ...(image?.secure_url && { avatarURL: image?.secure_url }),
+  //     ...(image?.public_id && { public_id: image?.public_id })
+  //   });
+  //
+  //   // this.emailService.sendUserConfirmation(user.email, user.verificationCode);
+  //
+  //   const { password, verificationCode, __v, ...userDtoReverse } =
+  //     user.toObject();
+  //
+  //   return userDtoReverse;
   }
 
   async updateUser(param, body, file: Express.Multer.File) {
-    if (file && file.mimetype.split('/')[0] !== EComposeType.Image) {
-      throw new BadRequestException('Wrong uploaded type file');
-    }
-
-    const user = await this.userModel.findById(param.id).exec();
-    const image = await this.commonService.cloudinaryHost(file);
-    if (image && user.public_id) {
-      await this.commonService.deleteFromCloudinary(
-        user.public_id,
-        EComposeType.Image,
-      );
-    }
-
-    for (let key in body) {
-      user[key] = body[key];
-    }
-
-    image?.secure_url && (user.avatarURL = image?.secure_url);
-    image?.public_id && (user.public_id = image?.public_id);
-
-    user.save();
-
-    return user;
+    // if (file && file.mimetype.split('/')[0] !== EComposeType.Image) {
+    //   throw new BadRequestException('Wrong uploaded type file');
+    // }
+    //
+    // const user = await this.userModel.findById(param.id).exec();
+    // const image = await this.commonService.cloudinaryHost(file);
+    // if (image && user.public_id) {
+    //   await this.commonService.deleteFromCloudinary(
+    //     user.public_id,
+    //     EComposeType.Image,
+    //   );
+    // }
+    //
+    // for (let key in body) {
+    //   user[key] = body[key];
+    // }
+    //
+    // image?.secure_url && (user.avatarURL = image?.secure_url);
+    // image?.public_id && (user.public_id = image?.public_id);
+    //
+    // user.save();
+    //
+    // return user;
   }
 
   async signOutUser(parsedToken) {
@@ -110,11 +110,11 @@ export class UsersService {
   }
 
   async getInfoUserCustomer({ _id }) {
-    const infoCustomer = await this.userModel.findOne({ _id }); //.populate('customer'); // role: ERole.Customer
-    if (!infoCustomer) throw new BadRequestException('Customer was not found.');
-    const { password, verificationCode, __v, ...userDtoInfo } =
-      infoCustomer.toObject();
-    return userDtoInfo;
+    // const infoCustomer = await this.userModel.findOne({ _id }); //.populate('customer'); // role: ERole.Customer
+    // if (!infoCustomer) throw new BadRequestException('Customer was not found.');
+    // const { password, verificationCode, __v, ...userDtoInfo } =
+    //   infoCustomer.toObject();
+    // return userDtoInfo;
   }
 
   async getUserById(id) {
@@ -157,171 +157,171 @@ export class UsersService {
   }
 
   async getUsers(param, query, req) {
-    const ARR_FIELDS = ['firstName', 'lastName', 'username'];
-    const {
-      page = null,
-      size = PAGINATION_USERS_DEFAULT.size,
-      sort = PAGINATION_USERS_DEFAULT.sort,
-    } = query;
-    // const estimatedDocumentCount: number = await this.userModel.find().estimatedDocumentCount();
-    console.log(100005, param, param.someName, query);
-    // const find = await this.userModel.find({});
-
-    const users = await this.userModel.aggregate([
-      ...(param.someName
-        ? [
-            {
-              $match: {
-                $or: ARR_FIELDS.map((field) => ({
-                  [field]: { $regex: param.someName, $options: 'i' },
-                })),
-              },
-            },
-          ]
-        : []),
-      {
-        $sort: {
-          _id: sort === ESortOrderBy.DESC ? -1 : 1,
-        },
-      },
-    ]);
-
-    console.log(users);
-    return {
-      body: users.slice(0, size),
-      pagination: {
-        page: null,
-        size,
-        sort,
-        totalElements: users.length,
-        totalPages: null,
-        lastPage: size >= users.length,
-      },
-    };
+    // const ARR_FIELDS = ['firstName', 'lastName', 'username'];
+    // const {
+    //   page = null,
+    //   size = PAGINATION_USERS_DEFAULT.size,
+    //   sort = PAGINATION_USERS_DEFAULT.sort,
+    // } = query;
+    // // const estimatedDocumentCount: number = await this.userModel.find().estimatedDocumentCount();
+    // console.log(100005, param, param.someName, query);
+    // // const find = await this.userModel.find({});
+    //
+    // const users = await this.userModel.aggregate([
+    //   ...(param.someName
+    //     ? [
+    //         {
+    //           $match: {
+    //             $or: ARR_FIELDS.map((field) => ({
+    //               [field]: { $regex: param.someName, $options: 'i' },
+    //             })),
+    //           },
+    //         },
+    //       ]
+    //     : []),
+    //   {
+    //     $sort: {
+    //       _id: sort === ESortOrderBy.DESC ? -1 : 1,
+    //     },
+    //   },
+    // ]);
+    //
+    // console.log(users);
+    // return {
+    //   body: users.slice(0, size),
+    //   pagination: {
+    //     page: null,
+    //     size,
+    //     sort,
+    //     totalElements: users.length,
+    //     totalPages: null,
+    //     lastPage: size >= users.length,
+    //   },
+    // };
   }
 
   async getUsersExtends(query) {
-    const {
-      size = PAGINATION_USERS_DEFAULT.size,
-      sort = PAGINATION_USERS_DEFAULT.sort,
-      ...findQueries
-    } = query;
-
-    const users = await this.userModel.aggregate([
-      ...(Object.keys(findQueries).length
-        ? [
-            {
-              $match: {
-                $and: Object.entries(findQueries).map(([k, v]) => ({
-                  [k]: { $regex: new RegExp(['^', v, '$'].join(''), 'i') }, // exact value + insensitive register
-                })),
-              },
-            },
-          ]
-        : []),
-      {
-        $sort: {
-          _id: sort === ESortOrderBy.DESC ? -1 : 1,
-        },
-      },
-    ]);
-
-    console.log(users);
-    return {
-      body: users.slice(0, size),
-      pagination: {
-        page: null,
-        size,
-        sort,
-        totalElements: users.length,
-        totalPages: null,
-        lastPage: size >= users.length,
-      },
-    };
+    // const {
+    //   size = PAGINATION_USERS_DEFAULT.size,
+    //   sort = PAGINATION_USERS_DEFAULT.sort,
+    //   ...findQueries
+    // } = query;
+    //
+    // const users = await this.userModel.aggregate([
+    //   ...(Object.keys(findQueries).length
+    //     ? [
+    //         {
+    //           $match: {
+    //             $and: Object.entries(findQueries).map(([k, v]) => ({
+    //               [k]: { $regex: new RegExp(['^', v, '$'].join(''), 'i') }, // exact value + insensitive register
+    //             })),
+    //           },
+    //         },
+    //       ]
+    //     : []),
+    //   {
+    //     $sort: {
+    //       _id: sort === ESortOrderBy.DESC ? -1 : 1,
+    //     },
+    //   },
+    // ]);
+    //
+    // console.log(users);
+    // return {
+    //   body: users.slice(0, size),
+    //   pagination: {
+    //     page: null,
+    //     size,
+    //     sort,
+    //     totalElements: users.length,
+    //     totalPages: null,
+    //     lastPage: size >= users.length,
+    //   },
+    // };
   }
 
   async getCurrentUserAggregate({ _id }) {
-    const agg = await this.userModel.aggregate([
-      { $match: { _id: new mongoose.Types.ObjectId(_id) } },
-      // ---------------------start aggregate cart-----------------------------------
-      {
-        $unwind: {
-          path: '$cart',
-        },
-      },
-      {
-        $lookup: {
-          from: 'products',
-          localField: 'cart.productId',
-          foreignField: '_id',
-          as: 'cart.product',
-        },
-      },
-      {
-        $unwind: {
-          path: '$cart.product',
-        },
-      },
-      {
-        $group: {
-          _id: '$_id',
-          products: {
-            $push: '$cart',
-          },
-        },
-      },
-      {
-        $lookup: {
-          from: 'users',
-          localField: '_id',
-          foreignField: '_id',
-          as: 'usersDetails',
-        },
-      },
-      {
-        $unwind: {
-          path: '$usersDetails',
-        },
-      },
-      {
-        $addFields: {
-          'usersDetails.cart': '$products',
-        },
-      },
-      {
-        $replaceRoot: {
-          newRoot: '$usersDetails',
-        },
-      }, // ------------end aggregate cart-----------------------------
-      {
-        $lookup: {
-          from: 'users',
-          localField: 'followers',
-          foreignField: '_id',
-          as: 'followers',
-        },
-      },
-      {
-        $lookup: {
-          from: 'users',
-          localField: 'following',
-          foreignField: '_id',
-          as: 'following',
-        },
-      },
-      {
-        $lookup: {
-          from: 'products',
-          localField: 'favorites',
-          foreignField: '_id',
-          as: 'favorites',
-        },
-      },
-    ]);
-    console.log(10001, agg);
-    if (!agg) throw new BadRequestException('User was not found');
-    // const { password, verificationCode, __v, ...userDtoInfo } = agg.toObject();
-    return agg;
+    // const agg = await this.userModel.aggregate([
+    //   { $match: { _id: new mongoose.Types.ObjectId(_id) } },
+    //   // ---------------------start aggregate cart-----------------------------------
+    //   {
+    //     $unwind: {
+    //       path: '$cart',
+    //     },
+    //   },
+    //   {
+    //     $lookup: {
+    //       from: 'products',
+    //       localField: 'cart.productId',
+    //       foreignField: '_id',
+    //       as: 'cart.product',
+    //     },
+    //   },
+    //   {
+    //     $unwind: {
+    //       path: '$cart.product',
+    //     },
+    //   },
+    //   {
+    //     $group: {
+    //       _id: '$_id',
+    //       products: {
+    //         $push: '$cart',
+    //       },
+    //     },
+    //   },
+    //   {
+    //     $lookup: {
+    //       from: 'users',
+    //       localField: '_id',
+    //       foreignField: '_id',
+    //       as: 'usersDetails',
+    //     },
+    //   },
+    //   {
+    //     $unwind: {
+    //       path: '$usersDetails',
+    //     },
+    //   },
+    //   {
+    //     $addFields: {
+    //       'usersDetails.cart': '$products',
+    //     },
+    //   },
+    //   {
+    //     $replaceRoot: {
+    //       newRoot: '$usersDetails',
+    //     },
+    //   }, // ------------end aggregate cart-----------------------------
+    //   {
+    //     $lookup: {
+    //       from: 'users',
+    //       localField: 'followers',
+    //       foreignField: '_id',
+    //       as: 'followers',
+    //     },
+    //   },
+    //   {
+    //     $lookup: {
+    //       from: 'users',
+    //       localField: 'following',
+    //       foreignField: '_id',
+    //       as: 'following',
+    //     },
+    //   },
+    //   {
+    //     $lookup: {
+    //       from: 'products',
+    //       localField: 'favorites',
+    //       foreignField: '_id',
+    //       as: 'favorites',
+    //     },
+    //   },
+    // ]);
+    // console.log(10001, agg);
+    // if (!agg) throw new BadRequestException('User was not found');
+    // // const { password, verificationCode, __v, ...userDtoInfo } = agg.toObject();
+    // return agg;
   }
 
   async addFavoriteProduct(productId: string, req) {
