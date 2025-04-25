@@ -113,71 +113,71 @@ export class CommonService {
     //     return { accessToken, refreshToken };
     // };
 
-    // multerFactory(files: Array<Express.Multer.File>): string[] {
-    //     return files.map(file => {
-    //         const uniqueSuffix = Date.now();
-    //         const ext = '.webp'; //  path.parse(file.originalname).ext;
-    //         // console.log(
-    //         //   `${process.env.BASE_URL_API}/${UPLOADS}/${uniqueSuffix}${ext}`,
-    //         // );
-    //         sharp(file.buffer)
-    //             .resize(240, 240)
-    //             // .jpeg({ mozjpeg: true })
-    //             .toFile(process.cwd() + '/uploads/' + uniqueSuffix + ext, (err, info) =>
-    //                 console.log(1000666, err, info),
-    //             );
-    //         return `${process.env.BASE_URL_API}/${UPLOADS}/${uniqueSuffix}${ext}`;
-    //     });
-    // }
+    multerFactory(files: Array<Express.Multer.File>): string[] {
+        return files.map(file => {
+            const uniqueSuffix = Date.now();
+            const ext = '.webp'; //  path.parse(file.originalname).ext;
+            // console.log(
+            //   `${process.env.BASE_URL_API}/${UPLOADS}/${uniqueSuffix}${ext}`,
+            // );
+            sharp(file.buffer)
+                .resize(240, 240)
+                // .jpeg({ mozjpeg: true })
+                .toFile(process.cwd() + '/uploads/' + uniqueSuffix + ext, (err, info) =>
+                    console.log(1000666, err, info),
+                );
+            return `${process.env.BASE_URL_API}/${UPLOADS}/${uniqueSuffix}${ext}`;
+        });
+    }
 
-    // public async getFileListing(directory?: string): Promise<Array<string>> {
-    //     const promise$$$ = new Promise((resolve, rej) => {
-    //         fs.readdir(process.cwd() + '/uploads/static', (err, files) => {
-    //             const results = new Array<string>();
-    //             files.forEach(file => {
-    //                 console.log('file: ', `${process.env.BASE_URL_API}/${UPLOADS}/${STATIC}/${file}`);
-    //                 results.push(`${process.env.BASE_URL_API}/${UPLOADS}/${STATIC}/${file}`);
-    //             });
-    //             resolve(results);
-    //         });
-    //     });
-    //
-    //     console.log('promise- ', promise$$$);
-    //     return promise$$$ as Promise<Array<string>>;
-    // }
-    //
-    // public async getFileListingPath(directory?: string): Promise<Array<string>> {
-    //     const promise = new Promise((resolve, rej) => {
-    //         fs.readdir(process.cwd() + '/uploads/static', (err, files) => {
-    //             const results = files.map(file => `${UPLOADS}/${STATIC}/${file}`);
-    //             resolve(results);
-    //         });
-    //     });
-    //
-    //     return promise as Promise<Array<string>>;
-    // }
+    public async getFileListing(directory?: string): Promise<Array<string>> {
+        const promise$$$ = new Promise((resolve, rej) => {
+            fs.readdir(process.cwd() + '/uploads/static', (err, files) => {
+                const results = new Array<string>();
+                files.forEach(file => {
+                    console.log('file: ', `${process.env.BASE_URL_API}/${UPLOADS}/${STATIC}/${file}`);
+                    results.push(`${process.env.BASE_URL_API}/${UPLOADS}/${STATIC}/${file}`);
+                });
+                resolve(results);
+            });
+        });
 
-    // public async imgbbHost(file: Express.Multer.File) {
-    //     const form: FormData = new FormData();
-    //     form.append('image', file.buffer.toString('base64'));
-    //
-    //     // console.log('form::: ', form);
-    //     let response;
-    //
-    //     try {
-    //         // @ts-ignore
-    //         response = await axios({
-    //             method: 'POST',
-    //             url: IMGBB_UPLOAD_URL,
-    //             data: form,
-    //             headers: { 'Content-Type': 'multipart/form-data' },
-    //         });
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    //
-    //     return response.data;
-    // }
+        console.log('promise- ', promise$$$);
+        return promise$$$ as Promise<Array<string>>;
+    }
+
+    public async getFileListingPath(directory?: string): Promise<Array<string>> {
+        const promise = new Promise((resolve, rej) => {
+            fs.readdir(process.cwd() + '/uploads/static', (err, files) => {
+                const results = files.map(file => `${UPLOADS}/${STATIC}/${file}`);
+                resolve(results);
+            });
+        });
+
+        return promise as Promise<Array<string>>;
+    }
+
+    public async imgbbHost(file: Express.Multer.File) {
+        const form: FormData = new FormData();
+        form.append('image', file.buffer.toString('base64'));
+
+        // console.log('form::: ', form);
+        let response;
+
+        try {
+            // @ts-ignore
+            response = await axios({
+                method: 'POST',
+                url: IMGBB_UPLOAD_URL,
+                data: form,
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+        } catch (err) {
+            console.log(err);
+        }
+
+        return response.data;
+    }
 
 
 }
