@@ -325,90 +325,90 @@ export class UsersService {
   }
 
   async addFavoriteProduct(productId: string, req) {
-    // const user = await this.userModel.findByIdAndUpdate(
-    //   req.user.uid,
-    //   { $push: { favorites: productId } },
-    //   { new: true },
-    // );
-    //
-    // return user;
+    const user = await this.userModel.findByIdAndUpdate(
+      req.user.uid,
+      { $push: { favorites: productId } },
+      { new: true },
+    );
+
+    return user;
   }
 
   async delFavoriteProduct(productId: string, req) {
-    // const user = await this.userModel.findByIdAndUpdate(
-    //   req.user.uid,
-    //   { $pull: { favorites: productId } },
-    //   { new: true },
-    // );
-    //
-    // return user;
+    const user = await this.userModel.findByIdAndUpdate(
+      req.user.uid,
+      { $pull: { favorites: productId } },
+      { new: true },
+    );
+
+    return user;
   }
 
   async addCartProduct(param: CartProductUserParamDto, req) {
-    // const user = await this.userModel.findByIdAndUpdate(
-    //   req.user.uid,
-    //   {
-    //     $push: {
-    //       cart: {
-    //         productId: new mongoose.Types.ObjectId(param.productId),
-    //         amount: param.amount,
-    //       },
-    //     },
-    //   },
-    //   { new: true },
-    // );
-    //
-    // return user;
+    const user = await this.userModel.findByIdAndUpdate(
+      req.user.uid,
+      {
+        $push: {
+          cart: {
+            productId: new mongoose.Types.ObjectId(param.productId),
+            amount: param.amount,
+          },
+        },
+      },
+      { new: true },
+    );
+
+    return user;
   }
 
   async delCartProduct(param: CartProductUserParamDto, req) {
-    // const user = await this.userModel.findByIdAndUpdate(
-    //   req.user.uid,
-    //   {
-    //     $pull: {
-    //       cart: {
-    //         productId: new mongoose.Types.ObjectId(param.productId),
-    //         amount: param.amount,
-    //       },
-    //     },
-    //   },
-    //   { new: true },
-    // );
-    //
-    // return user;
+    const user = await this.userModel.findByIdAndUpdate(
+      req.user.uid,
+      {
+        $pull: {
+          cart: {
+            productId: new mongoose.Types.ObjectId(param.productId),
+            amount: param.amount,
+          },
+        },
+      },
+      { new: true },
+    );
+
+    return user;
   }
 
   async follow(req, body) {
-    // const user = await this.userModel.findById(req.user.uid).exec();
-    // if (!user.following.includes(body.followId)) {
-    //   user.following.push(body.followId);
-    //   await user.save();
-    //
-    //   const follower = await this.userModel.findById(body.followId).exec();
-    //   if (!follower.followers.includes(req.user.uid)) {
-    //     follower.followers.push(req.user.uid);
-    //     await follower.save();
-    //   }
-    // }
-    //
-    // // const populatedFollowers = await user.populate('followers');
-    // return (await user.populate('followers')).populate('following');
+    const user = await this.userModel.findById(req.user.uid).exec();
+    if (!user.following.includes(body.followId)) {
+      user.following.push(body.followId);
+      await user.save();
+
+      const follower = await this.userModel.findById(body.followId).exec();
+      if (!follower.followers.includes(req.user.uid)) {
+        follower.followers.push(req.user.uid);
+        await follower.save();
+      }
+    }
+
+    // const populatedFollowers = await user.populate('followers');
+    return (await user.populate('followers')).populate('following');
   }
 
   async unfollow(req: IRequestExt, body) {
-    // const user = await this.userModel.findByIdAndUpdate(
-    //   req.user.uid,
-    //   { $pull: { following: body.followId } },
-    //   { new: true },
-    // );
-    //
-    // const follower = await this.userModel.findByIdAndUpdate(
-    //   body.followId,
-    //   { $pull: { followers: req.user.uid } },
-    //   { new: true },
-    // );
-    //
-    // return (await user.populate('followers')).populate('following');
+    const user = await this.userModel.findByIdAndUpdate(
+      req.user.uid,
+      { $pull: { following: body.followId } },
+      { new: true },
+    );
+
+    const follower = await this.userModel.findByIdAndUpdate(
+      body.followId,
+      { $pull: { followers: req.user.uid } },
+      { new: true },
+    );
+
+    return (await user.populate('followers')).populate('following');
   }
 
   async signIn(signInDto) {
