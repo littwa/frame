@@ -27,8 +27,8 @@ export class UsersService {
   public accessTokenPath = 'jwtExpires._1hour'; // 'jwtExpires._30Seconds'; // 'jwtExpires._60Seconds'; // 'jwtExpires._1hour'; //
 
   constructor(
-    @InjectModel(Session.name) public sessionModel: Model<SessionDocument>,
-    // @InjectModel(User.name) public userModel: Model<UserDocument>,
+    // @InjectModel(Session.name) public sessionModel: Model<SessionDocument>,
+    @InjectModel(User.name) public userModel: Model<UserDocument>,
     private jwtService: JwtService,
     public configService: ConfigService,
     @Inject('UseFactoryTest') public configFactory: any,
@@ -508,15 +508,15 @@ export class UsersService {
     return { accessToken, refreshToken };
   };
 
-  async createSessionUtility(uid) {
-    const expRefreshToken =
-      Date.now() + this.configService.get(this.refreshTokenPath).expIncrement;
-
-    return await this.sessionModel.create({
-      uid,
-      expRefreshToken,
-    });
-  }
+  // async createSessionUtility(uid) {
+  //   const expRefreshToken =
+  //     Date.now() + this.configService.get(this.refreshTokenPath).expIncrement;
+  //
+  //   return await this.sessionModel.create({
+  //     uid,
+  //     expRefreshToken,
+  //   });
+  // }
 
   // async googleLogin(req) {
   //   if (!req.user) throw new UnauthorizedException('Not authorized');
