@@ -40,20 +40,20 @@ export class UsersService {
     createUserCustomerDto: UserCustomerCreateDto, file: Express.Multer.File
   ){
     // :Promise<object>
-    // let user = await this.userModel.findOne({
-    //   email: createUserCustomerDto.email,
-    //   role: ERole.Customer,
-    // });
-    //
-    // if (user)
-    //   throw new BadRequestException(
-    //     'User customer with current email is registered',
-    //   );
-    //
-    // const hashPassword = await bcrypt.hash(createUserCustomerDto.password, 5);
-    //
-    // const image = await this.commonService.cloudinaryHost(file);
-    //
+    let user = await this.userModel.findOne({
+      email: createUserCustomerDto.email,
+      role: ERole.Customer,
+    });
+
+    if (user)
+      throw new BadRequestException(
+        'User customer with current email is registered',
+      );
+
+    const hashPassword = await bcrypt.hash(createUserCustomerDto.password, 5);
+
+    const image = await this.commonService.cloudinaryHost(file);
+
     // user = await this.userModel.create({
     //   ...createUserCustomerDto,
     //   password: hashPassword,
