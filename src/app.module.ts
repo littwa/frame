@@ -32,12 +32,7 @@ import { AppService } from './app.service';
 export class AppModule {}
 
 
-// ,
-// "axios": "^1.8.4",
-//   "bcrypt": "^5.1.1",
-//   "class-transformer": "^0.5.1",
-//   "class-validator": "^0.14.1",
-//   "cloudinary": "^2.6.0",
+
 //   "dotenv": "^16.5.0",
 //   "mongoose": "^8.13.2",
 //   "passport": "^0.7.0",
