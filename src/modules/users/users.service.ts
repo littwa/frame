@@ -157,171 +157,171 @@ export class UsersService {
   }
 
   async getUsers(param, query, req) {
-    // const ARR_FIELDS = ['firstName', 'lastName', 'username'];
-    // const {
-    //   page = null,
-    //   size = PAGINATION_USERS_DEFAULT.size,
-    //   sort = PAGINATION_USERS_DEFAULT.sort,
-    // } = query;
-    // // const estimatedDocumentCount: number = await this.userModel.find().estimatedDocumentCount();
-    // console.log(100005, param, param.someName, query);
-    // // const find = await this.userModel.find({});
-    //
-    // const users = await this.userModel.aggregate([
-    //   ...(param.someName
-    //     ? [
-    //         {
-    //           $match: {
-    //             $or: ARR_FIELDS.map((field) => ({
-    //               [field]: { $regex: param.someName, $options: 'i' },
-    //             })),
-    //           },
-    //         },
-    //       ]
-    //     : []),
-    //   {
-    //     $sort: {
-    //       _id: sort === ESortOrderBy.DESC ? -1 : 1,
-    //     },
-    //   },
-    // ]);
-    //
-    // console.log(users);
-    // return {
-    //   body: users.slice(0, size),
-    //   pagination: {
-    //     page: null,
-    //     size,
-    //     sort,
-    //     totalElements: users.length,
-    //     totalPages: null,
-    //     lastPage: size >= users.length,
-    //   },
-    // };
+    const ARR_FIELDS = ['firstName', 'lastName', 'username'];
+    const {
+      page = null,
+      size = PAGINATION_USERS_DEFAULT.size,
+      sort = PAGINATION_USERS_DEFAULT.sort,
+    } = query;
+    // const estimatedDocumentCount: number = await this.userModel.find().estimatedDocumentCount();
+    console.log(100005, param, param.someName, query);
+    // const find = await this.userModel.find({});
+
+    const users = await this.userModel.aggregate([
+      ...(param.someName
+        ? [
+            {
+              $match: {
+                $or: ARR_FIELDS.map((field) => ({
+                  [field]: { $regex: param.someName, $options: 'i' },
+                })),
+              },
+            },
+          ]
+        : []),
+      {
+        $sort: {
+          _id: sort === ESortOrderBy.DESC ? -1 : 1,
+        },
+      },
+    ]);
+
+    console.log(users);
+    return {
+      body: users.slice(0, size),
+      pagination: {
+        page: null,
+        size,
+        sort,
+        totalElements: users.length,
+        totalPages: null,
+        lastPage: size >= users.length,
+      },
+    };
   }
 
   async getUsersExtends(query) {
-    // const {
-    //   size = PAGINATION_USERS_DEFAULT.size,
-    //   sort = PAGINATION_USERS_DEFAULT.sort,
-    //   ...findQueries
-    // } = query;
-    //
-    // const users = await this.userModel.aggregate([
-    //   ...(Object.keys(findQueries).length
-    //     ? [
-    //         {
-    //           $match: {
-    //             $and: Object.entries(findQueries).map(([k, v]) => ({
-    //               [k]: { $regex: new RegExp(['^', v, '$'].join(''), 'i') }, // exact value + insensitive register
-    //             })),
-    //           },
-    //         },
-    //       ]
-    //     : []),
-    //   {
-    //     $sort: {
-    //       _id: sort === ESortOrderBy.DESC ? -1 : 1,
-    //     },
-    //   },
-    // ]);
-    //
-    // console.log(users);
-    // return {
-    //   body: users.slice(0, size),
-    //   pagination: {
-    //     page: null,
-    //     size,
-    //     sort,
-    //     totalElements: users.length,
-    //     totalPages: null,
-    //     lastPage: size >= users.length,
-    //   },
-    // };
+    const {
+      size = PAGINATION_USERS_DEFAULT.size,
+      sort = PAGINATION_USERS_DEFAULT.sort,
+      ...findQueries
+    } = query;
+
+    const users = await this.userModel.aggregate([
+      ...(Object.keys(findQueries).length
+        ? [
+            {
+              $match: {
+                $and: Object.entries(findQueries).map(([k, v]) => ({
+                  [k]: { $regex: new RegExp(['^', v, '$'].join(''), 'i') }, // exact value + insensitive register
+                })),
+              },
+            },
+          ]
+        : []),
+      {
+        $sort: {
+          _id: sort === ESortOrderBy.DESC ? -1 : 1,
+        },
+      },
+    ]);
+
+    console.log(users);
+    return {
+      body: users.slice(0, size),
+      pagination: {
+        page: null,
+        size,
+        sort,
+        totalElements: users.length,
+        totalPages: null,
+        lastPage: size >= users.length,
+      },
+    };
   }
 
   async getCurrentUserAggregate({ _id }) {
-    // const agg = await this.userModel.aggregate([
-    //   { $match: { _id: new mongoose.Types.ObjectId(_id) } },
-    //   // ---------------------start aggregate cart-----------------------------------
-    //   {
-    //     $unwind: {
-    //       path: '$cart',
-    //     },
-    //   },
-    //   {
-    //     $lookup: {
-    //       from: 'products',
-    //       localField: 'cart.productId',
-    //       foreignField: '_id',
-    //       as: 'cart.product',
-    //     },
-    //   },
-    //   {
-    //     $unwind: {
-    //       path: '$cart.product',
-    //     },
-    //   },
-    //   {
-    //     $group: {
-    //       _id: '$_id',
-    //       products: {
-    //         $push: '$cart',
-    //       },
-    //     },
-    //   },
-    //   {
-    //     $lookup: {
-    //       from: 'users',
-    //       localField: '_id',
-    //       foreignField: '_id',
-    //       as: 'usersDetails',
-    //     },
-    //   },
-    //   {
-    //     $unwind: {
-    //       path: '$usersDetails',
-    //     },
-    //   },
-    //   {
-    //     $addFields: {
-    //       'usersDetails.cart': '$products',
-    //     },
-    //   },
-    //   {
-    //     $replaceRoot: {
-    //       newRoot: '$usersDetails',
-    //     },
-    //   }, // ------------end aggregate cart-----------------------------
-    //   {
-    //     $lookup: {
-    //       from: 'users',
-    //       localField: 'followers',
-    //       foreignField: '_id',
-    //       as: 'followers',
-    //     },
-    //   },
-    //   {
-    //     $lookup: {
-    //       from: 'users',
-    //       localField: 'following',
-    //       foreignField: '_id',
-    //       as: 'following',
-    //     },
-    //   },
-    //   {
-    //     $lookup: {
-    //       from: 'products',
-    //       localField: 'favorites',
-    //       foreignField: '_id',
-    //       as: 'favorites',
-    //     },
-    //   },
-    // ]);
-    // console.log(10001, agg);
-    // if (!agg) throw new BadRequestException('User was not found');
-    // // const { password, verificationCode, __v, ...userDtoInfo } = agg.toObject();
-    // return agg;
+    const agg = await this.userModel.aggregate([
+      { $match: { _id: new mongoose.Types.ObjectId(_id) } },
+      // ---------------------start aggregate cart-----------------------------------
+      {
+        $unwind: {
+          path: '$cart',
+        },
+      },
+      {
+        $lookup: {
+          from: 'products',
+          localField: 'cart.productId',
+          foreignField: '_id',
+          as: 'cart.product',
+        },
+      },
+      {
+        $unwind: {
+          path: '$cart.product',
+        },
+      },
+      {
+        $group: {
+          _id: '$_id',
+          products: {
+            $push: '$cart',
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'usersDetails',
+        },
+      },
+      {
+        $unwind: {
+          path: '$usersDetails',
+        },
+      },
+      {
+        $addFields: {
+          'usersDetails.cart': '$products',
+        },
+      },
+      {
+        $replaceRoot: {
+          newRoot: '$usersDetails',
+        },
+      }, // ------------end aggregate cart-----------------------------
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'followers',
+          foreignField: '_id',
+          as: 'followers',
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'following',
+          foreignField: '_id',
+          as: 'following',
+        },
+      },
+      {
+        $lookup: {
+          from: 'products',
+          localField: 'favorites',
+          foreignField: '_id',
+          as: 'favorites',
+        },
+      },
+    ]);
+    console.log(10001, agg);
+    if (!agg) throw new BadRequestException('User was not found');
+    // const { password, verificationCode, __v, ...userDtoInfo } = agg.toObject();
+    return agg;
   }
 
   async addFavoriteProduct(productId: string, req) {
@@ -412,36 +412,36 @@ export class UsersService {
   }
 
   async signIn(signInDto) {
-    // const { email, password } = signInDto;
-    //
-    // const user = await this.userModel
-    //   .findOne({ email }) // , role: ERole.Customer
-    //   .populate('followers')
-    //   .populate('following');
-    //
-    // if (!user) throw new BadRequestException('User was not found');
-    // if (user.status !== 'Verified')
-    //   throw new BadRequestException('User not verified');
-    //
-    // const isPasswordValid = await bcrypt.compare(password, user.password);
-    //
-    // if (!isPasswordValid) throw new BadRequestException('Password wrong');
-    //
-    // const userObjectId = user._id;
-    //
-    // const createSession = await this.createSessionUtility(userObjectId);
-    // const tokens = this.getPairTokensUtility(createSession, user);
-    //
-    // return {
-    //   _id: user._id,
-    //   username: user.username,
-    //   email: user.email,
-    //   status: user.status,
-    //   role: user.role,
-    //   accessToken: tokens.accessToken,
-    //   refreshToken: tokens.refreshToken,
-    //   // tokens,
-    // };
+    const { email, password } = signInDto;
+
+    const user = await this.userModel
+      .findOne({ email }) // , role: ERole.Customer
+      .populate('followers')
+      .populate('following');
+
+    if (!user) throw new BadRequestException('User was not found');
+    if (user.status !== 'Verified')
+      throw new BadRequestException('User not verified');
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) throw new BadRequestException('Password wrong');
+
+    const userObjectId = user._id;
+
+    const createSession = await this.createSessionUtility(userObjectId);
+    const tokens = this.getPairTokensUtility(createSession, user);
+
+    return {
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      status: user.status,
+      role: user.role,
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+      // tokens,
+    };
   }
 
   async getRefreshToken(req: IRequestExt) {
@@ -482,30 +482,30 @@ export class UsersService {
   }
 
   getPairTokensUtility = (session, user) => {
-    // const accessToken = this.jwtService.sign(
-    //   {
-    //     sid: session._id,
-    //     uid: session.uid,
-    //     secret: process.env.TOKEN_SECRET,
-    //     email: user.email,
-    //     role: user.role,
-    //     token_type: ETokenTypes.Access,
-    //   },
-    //   { expiresIn: this.configService.get(this.accessTokenPath).exp },
-    // );
-    // const refreshToken = this.jwtService.sign(
-    //   {
-    //     sid: session._id,
-    //     uid: session.uid,
-    //     secret: process.env.TOKEN_SECRET,
-    //     email: user.email,
-    //     role: user.role,
-    //     token_type: ETokenTypes.Refresh,
-    //   },
-    //   { expiresIn: this.configService.get(this.refreshTokenPath).exp },
-    // );
-    //
-    // return { accessToken, refreshToken };
+    const accessToken = this.jwtService.sign(
+      {
+        sid: session._id,
+        uid: session.uid,
+        secret: process.env.TOKEN_SECRET,
+        email: user.email,
+        role: user.role,
+        token_type: ETokenTypes.Access,
+      },
+      { expiresIn: this.configService.get(this.accessTokenPath).exp },
+    );
+    const refreshToken = this.jwtService.sign(
+      {
+        sid: session._id,
+        uid: session.uid,
+        secret: process.env.TOKEN_SECRET,
+        email: user.email,
+        role: user.role,
+        token_type: ETokenTypes.Refresh,
+      },
+      { expiresIn: this.configService.get(this.refreshTokenPath).exp },
+    );
+
+    return { accessToken, refreshToken };
   };
 
   async createSessionUtility(uid) {
@@ -581,13 +581,13 @@ export class UsersService {
   // }
 
   decodeAnyToken(authorization: string): any {
-    // if (!authorization) {
-    //   throw new BadRequestException('No authorization token to parse');
-    // }
-    //
-    // const token = authorization.slice(7);
-    //
-    // return this.jwtService.decode(token, { complete: true });
+    if (!authorization) {
+      throw new BadRequestException('No authorization token to parse');
+    }
+
+    const token = authorization.slice(7);
+
+    return this.jwtService.decode(token, { complete: true });
   }
 
   async test(body, param, query, file): Promise<any> {
