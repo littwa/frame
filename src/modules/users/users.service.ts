@@ -56,21 +56,21 @@ export class UsersService {
 
     user = await this.userModel.create({
       ...createUserCustomerDto,
-      password: hashPassword,
-      username: createUserCustomerDto.email.split('@')[0],
-      // verificationCode: code,
-      status: EStatus.Verified, // EStatus.NotVerified,
-      dateCreated: Date.now(),
-      ...(image?.secure_url && { avatarURL: image?.secure_url }),
-      ...(image?.public_id && { public_id: image?.public_id })
+      // password: hashPassword,
+      // username: createUserCustomerDto.email.split('@')[0],
+      // // verificationCode: code,
+      // status: EStatus.Verified, // EStatus.NotVerified,
+      // dateCreated: Date.now(),
+      // ...(image?.secure_url && { avatarURL: image?.secure_url }),
+      // ...(image?.public_id && { public_id: image?.public_id })
     });
 
     // this.emailService.sendUserConfirmation(user.email, user.verificationCode);
 
-    // const { password, verificationCode, __v, ...userDtoReverse } =
-    //   user.toObject();
-    //
-    // return userDtoReverse;
+    const { password, verificationCode, __v, ...userDtoReverse } =
+      user.toObject();
+
+    return userDtoReverse;
   }
 
   async updateUser(param, body, file: Express.Multer.File) {
