@@ -9,7 +9,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from 'src/strategies/jwt.strategy';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from 'src/authorization/roles.guard';
-// import { Session, SessionSchema } from 'src/modules/users/session.schema';
+import { Session, SessionSchema } from 'src/modules/users/session.schema';
 import { HttpModule } from '@nestjs/axios';
 
 @Global()
@@ -17,7 +17,7 @@ import { HttpModule } from '@nestjs/axios';
     imports: [
         MongooseModule.forFeature([
             { name: User.name, schema: UserSchema },
-            // { name: Session.name, schema: SessionSchema },
+            { name: Session.name, schema: SessionSchema },
         ]),
       // MongooseModule.forFeatureAsync([
       //     // {
