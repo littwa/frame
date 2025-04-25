@@ -9,7 +9,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User, UserDocument } from 'src/modules/users/user.schema';
+// import { User, UserDocument } from 'src/modules/users/user.schema';
 import { ERole, EStatus } from 'src/shared/enums/role.enum';
 import { JwtService } from '@nestjs/jwt';
 import { CartProductUserParamDto, UserCustomerCreateDto } from './dto/user.dto';
@@ -28,7 +28,7 @@ export class UsersService {
 
   constructor(
     @InjectModel(Session.name) public sessionModel: Model<SessionDocument>,
-    @InjectModel(User.name) public userModel: Model<UserDocument>,
+    // @InjectModel(User.name) public userModel: Model<UserDocument>,
     private jwtService: JwtService,
     public configService: ConfigService,
     @Inject('UseFactoryTest') public configFactory: any,
