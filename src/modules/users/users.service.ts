@@ -118,42 +118,42 @@ export class UsersService {
   }
 
   async getUserById(id) {
-    // return this.userModel.findById(id, {
-    //   status: 0,
-    //   password: 0,
-    //   cart: 0,
-    //   orders: 0,
-    //   watchedProducts: 0,
-    // });
+    return this.userModel.findById(id, {
+      status: 0,
+      password: 0,
+      cart: 0,
+      orders: 0,
+      watchedProducts: 0,
+    });
   }
 
   async getUserFollowersById(id) {
-    // return (
-    //   await this.userModel.findById(id, { followers: 1 }).populate('followers')
-    // ).followers;
+    return (
+      await this.userModel.findById(id, { followers: 1 }).populate('followers')
+    ).followers;
   }
 
   async getUserFollowingById(id) {
-    // return (
-    //   await this.userModel.findById(id, { following: 1 }).populate('following')
-    // ).following;
+    return (
+      await this.userModel.findById(id, { following: 1 }).populate('following')
+    ).following;
   }
 
   async getCurrentUser({ _id }) {
-    // const infoUser = await this.userModel
-    //   .findOne(
-    //     {
-    //       _id,
-    //       // role: ERole.Customer,
-    //     },
-    //     { password: 0 },
-    //   )
-    //   .populate('followers')
-    //   .populate('following'); // .populate('customer');
-    // if (!infoUser) throw new BadRequestException('User was not found');
-    // const { password, verificationCode, __v, ...userDtoInfo } =
-    //   infoUser.toObject();
-    // return userDtoInfo;
+    const infoUser = await this.userModel
+      .findOne(
+        {
+          _id,
+          // role: ERole.Customer,
+        },
+        { password: 0 },
+      )
+      .populate('followers')
+      .populate('following'); // .populate('customer');
+    if (!infoUser) throw new BadRequestException('User was not found');
+    const { password, verificationCode, __v, ...userDtoInfo } =
+      infoUser.toObject();
+    return userDtoInfo;
   }
 
   async getUsers(param, query, req) {
@@ -591,67 +591,67 @@ export class UsersService {
   }
 
   async test(body, param, query, file): Promise<any> {
-    // // console.log(1100033, this.userModel.estimatedDocumentCount());
-    // //console.log(1100044, this.userModel.count({ role: 'customer' }));
-    // // const f = await this.userModel.count();
-    // // const f = await this.userModel.countDocuments();
-    // // const f = await this.userModel.estimatedDocumentCount();
-    // // const avatarURL = files && this.commonService.multerFactory(files)[0];
-    // // console.log('body::: ', body);
-    // // console.log('param::: ', param);
-    // // console.log('query::: ', query);
-    // // console.log('file::: ', files[0]);
-    // // console.log('bbb::::  ', files[0].buffer.toString('base64'))
-    //
-    // cloudinary.v2.config({
-    //   cloud_name: 'dweey9w3n',
-    //   api_key: '581476537898735',
-    //   api_secret: '5E00uGGPdOMvucu8o3rtRB8oBMY',
-    //   secure: true,
+    // console.log(1100033, this.userModel.estimatedDocumentCount());
+    //console.log(1100044, this.userModel.count({ role: 'customer' }));
+    // const f = await this.userModel.count();
+    // const f = await this.userModel.countDocuments();
+    // const f = await this.userModel.estimatedDocumentCount();
+    // const avatarURL = files && this.commonService.multerFactory(files)[0];
+    // console.log('body::: ', body);
+    // console.log('param::: ', param);
+    // console.log('query::: ', query);
+    // console.log('file::: ', files[0]);
+    // console.log('bbb::::  ', files[0].buffer.toString('base64'))
+
+    cloudinary.v2.config({
+      cloud_name: 'dweey9w3n',
+      api_key: '581476537898735',
+      api_secret: '5E00uGGPdOMvucu8o3rtRB8oBMY',
+      secure: true,
+    });
+
+    const form: FormData = new FormData();
+    form.append('file', file); // .buffer.toString('base64')
+
+    // cloudinary.v2.uploader.upload(files[0]).then(res=>console.log(11111111, res));
+
+    console.log('file::: ', file);
+    let response;
+
+    try {
+      // response = await cloudinary.v2.uploader.upload('data:image/png;base64,' + file.buffer.toString('base64'))
+      //     // @ts-ignore
+      //     response = await axios({
+      //         method: "POST",
+      //         url: IMGBB_UPLOAD_URL,
+      //         data: form,
+      //         headers: { "Content-Type": "multipart/form-data" },
+      //     })
+      //
+      //     console.log('imgbb_axios===================== ', response.data);
+      //
+      //
+    } catch (err) {
+      console.log(1111111, err);
+    }
+
+    console.log('response::: ', response);
+
+    // const f = await this.userModel.find().sort({ _id: -1 }).limit(1);
+    // const f = await this.userModel.find().sort({ $natural: -1 }).limit(1);
+    // const list = await this.commonService.getFileListing();
+    // let coll = db.collection('collection_name');
+    // coll.count().then((count) => {
+    //   console.log(count);
     // });
-    //
-    // const form: FormData = new FormData();
-    // form.append('file', file); // .buffer.toString('base64')
-    //
-    // // cloudinary.v2.uploader.upload(files[0]).then(res=>console.log(11111111, res));
-    //
-    // console.log('file::: ', file);
-    // let response;
-    //
-    // try {
-    //   // response = await cloudinary.v2.uploader.upload('data:image/png;base64,' + file.buffer.toString('base64'))
-    //   //     // @ts-ignore
-    //   //     response = await axios({
-    //   //         method: "POST",
-    //   //         url: IMGBB_UPLOAD_URL,
-    //   //         data: form,
-    //   //         headers: { "Content-Type": "multipart/form-data" },
-    //   //     })
-    //   //
-    //   //     console.log('imgbb_axios===================== ', response.data);
-    //   //
-    //   //
-    // } catch (err) {
-    //   console.log(1111111, err);
-    // }
-    //
-    // console.log('response::: ', response);
-    //
-    // // const f = await this.userModel.find().sort({ _id: -1 }).limit(1);
-    // // const f = await this.userModel.find().sort({ $natural: -1 }).limit(1);
-    // // const list = await this.commonService.getFileListing();
-    // // let coll = db.collection('collection_name');
-    // // coll.count().then((count) => {
-    // //   console.log(count);
-    // // });
-    //
-    // return {
-    //   response,
-    //   // body,
-    //   // res: response.data
-    //   // userModelFindCount: this.userModel.find().count(),
-    //   // list,
-    // };
+
+    return {
+      response,
+      // body,
+      // res: response.data
+      // userModelFindCount: this.userModel.find().count(),
+      // list,
+    };
   }
 
   //=========================verifycation======================================
