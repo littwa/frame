@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-// import { UsersModule } from './modules/users/users.module';
+import { UsersModule } from './modules/users/users.module';
 import { PassportModule } from '@nestjs/passport';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ServeStaticModule } from '@nestjs/serve-static';
@@ -23,7 +23,7 @@ import { TesterModule } from './modules/tester/tester.module';
       rootPath: path.join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',
     }),
-    // UsersModule,
+    UsersModule,
    TesterModule
   ],
   controllers: [AppController],
