@@ -27,7 +27,7 @@ export class UsersService {
   public accessTokenPath = 'jwtExpires._1hour'; // 'jwtExpires._30Seconds'; // 'jwtExpires._60Seconds'; // 'jwtExpires._1hour'; //
 
   constructor(
-    @InjectModel(Session.name) public sessionModel: Model<SessionDocument>,
+    // @InjectModel(Session.name) public sessionModel: Model<SessionDocument>,
     @InjectModel(User.name) public userModel: Model<UserDocument>,
     private jwtService: JwtService,
     public configService: ConfigService,
@@ -100,13 +100,13 @@ export class UsersService {
   }
 
   async signOutUser(parsedToken) {
-    const deletedSession = await this.sessionModel.findByIdAndDelete(
-      parsedToken.sid,
-    );
-    if (!deletedSession) {
-      throw new BadRequestException('No current session');
-    }
-    return { req: 'logOutUser Success' };
+    // const deletedSession = await this.sessionModel.findByIdAndDelete(
+    //   parsedToken.sid,
+    // );
+    // if (!deletedSession) {
+    //   throw new BadRequestException('No current session');
+    // }
+    // return { req: 'logOutUser Success' };
   }
 
   async getInfoUserCustomer({ _id }) {
@@ -445,40 +445,40 @@ export class UsersService {
   }
 
   async getRefreshToken(req: IRequestExt) {
-
-    const { uid, sid } = req.user;
-
-    // if (!req.get('Authorization')) {
-    //   throw new UnauthorizedException('Not authorized Token');
-    // }
     //
-    // const token = req.get('Authorization').slice(7);
-    // console.log('token::Authorization: ', token);
+    // const { uid, sid } = req.user;
     //
-    // const parsedToken = await this.jwtService.verify(token, {
-    //   secret: process.env.TOKEN_SECRET,
-    // });
+    // // if (!req.get('Authorization')) {
+    // //   throw new UnauthorizedException('Not authorized Token');
+    // // }
+    // //
+    // // const token = req.get('Authorization').slice(7);
+    // // console.log('token::Authorization: ', token);
+    // //
+    // // const parsedToken = await this.jwtService.verify(token, {
+    // //   secret: process.env.TOKEN_SECRET,
+    // // });
+    // //
+    // // console.log('+++ :', parsedToken, req.user)
+    // //
+    // // if (!parsedToken) throw new UnauthorizedException('Not authorized');
     //
-    // console.log('+++ :', parsedToken, req.user)
+    // const session = await this.sessionModel.findById(sid);
+    // const user = await this.userModel.findById(uid);
     //
-    // if (!parsedToken) throw new UnauthorizedException('Not authorized');
-
-    const session = await this.sessionModel.findById(sid);
-    const user = await this.userModel.findById(uid);
-
-    console.log('55555', req.user, session, user);
-
-    if (!session || !user || user._id.toString() !== session.uid.toString())
-      throw new UnauthorizedException('Not authorized');
-
-    const delSession = await this.sessionModel.findByIdAndDelete(
-      sid,
-    );
-
-    const createSession = await this.createSessionUtility(uid);
-    const newPairTokens = this.getPairTokensUtility(createSession, user);
-
-    return newPairTokens;
+    // console.log('55555', req.user, session, user);
+    //
+    // if (!session || !user || user._id.toString() !== session.uid.toString())
+    //   throw new UnauthorizedException('Not authorized');
+    //
+    // const delSession = await this.sessionModel.findByIdAndDelete(
+    //   sid,
+    // );
+    //
+    // const createSession = await this.createSessionUtility(uid);
+    // const newPairTokens = this.getPairTokensUtility(createSession, user);
+    //
+    // return newPairTokens;
   }
 
   getPairTokensUtility = (session, user) => {
@@ -509,13 +509,13 @@ export class UsersService {
   };
 
   async createSessionUtility(uid) {
-    const expRefreshToken =
-      Date.now() + this.configService.get(this.refreshTokenPath).expIncrement;
-
-    return await this.sessionModel.create({
-      uid,
-      expRefreshToken,
-    });
+    // const expRefreshToken =
+    //   Date.now() + this.configService.get(this.refreshTokenPath).expIncrement;
+    //
+    // return await this.sessionModel.create({
+    //   uid,
+    //   expRefreshToken,
+    // });
   }
 
   // async googleLogin(req) {

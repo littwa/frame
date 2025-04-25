@@ -30,16 +30,16 @@ import { HttpModule } from '@nestjs/axios';
           //         return schema;
           //     },
           // },
-          {
-              name: Session.name,
-              useFactory: () => {
-                  const schema = SessionSchema;
-                  schema.pre('save', function () {
-                      console.log('Hello from pre save SessionSchema');
-                  });
-                  return schema;
-              },
-          },
+          // {
+          //     name: Session.name,
+          //     useFactory: () => {
+          //         const schema = SessionSchema;
+          //         schema.pre('save', function () {
+          //             console.log('Hello from pre save SessionSchema');
+          //         });
+          //         return schema;
+          //     },
+          // },
       ]),
         JwtModule.registerAsync({
             useFactory: () => ({
