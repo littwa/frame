@@ -17,7 +17,7 @@ import { HttpModule } from '@nestjs/axios';
     imports: [
         MongooseModule.forFeature([
             { name: User.name, schema: UserSchema },
-            { name: Session.name, schema: SessionSchema },
+            // { name: Session.name, schema: SessionSchema },
         ]),
       // MongooseModule.forFeatureAsync([
       //     // {
