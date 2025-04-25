@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './modules/users/users.module';
-import { PassportModule } from '@nestjs/passport';
-import { MongooseModule } from '@nestjs/mongoose';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import * as path from 'path';
-import configuration from 'src/config/base.config';
-import { ConfigModule } from '@nestjs/config';
-import { TesterModule } from './modules/tester/tester.module';
+// import { UsersModule } from './modules/users/users.module';
+// import { PassportModule } from '@nestjs/passport';
+// import { MongooseModule } from '@nestjs/mongoose';
+// import { ServeStaticModule } from '@nestjs/serve-static';
+// import * as path from 'path';
+// import configuration from 'src/config/base.config';
+// import { ConfigModule } from '@nestjs/config';
+// import { TesterModule } from './modules/tester/tester.module';
 
 @Module({
   imports: [

@@ -15,16 +15,16 @@ async function bootstrap() {
 
   app.useGlobalFilters(new HttpExceptionFilter(httpAdapter)); // new AllExceptionsFilter()
 
-  const config = new DocumentBuilder()
-    .addBearerAuth()
-    .setTitle('Frame')
-    .setDescription('The Frame API description')
-    .setVersion('0.0.1')
-    .addTag('frame')
-    .build();
-
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  // const config = new DocumentBuilder()
+  //   .addBearerAuth()
+  //   .setTitle('Frame')
+  //   .setDescription('The Frame API description')
+  //   .setVersion('0.0.1')
+  //   .addTag('frame')
+  //   .build();
+  //
+  // const document = SwaggerModule.createDocument(app, config);
+  // SwaggerModule.setup('api', app, document);
 
   await app.listen(process.env.PORT || 3000);
 }
