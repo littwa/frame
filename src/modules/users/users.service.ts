@@ -38,38 +38,39 @@ export class UsersService {
 
   async createUserCustomer(
     createUserCustomerDto: UserCustomerCreateDto, file: Express.Multer.File
-  ):Promise<object>{
-    let user = await this.userModel.findOne({
-      email: createUserCustomerDto.email,
-      role: ERole.Customer,
-    });
-
-    if (user)
-      throw new BadRequestException(
-        'User customer with current email is registered',
-      );
-
-    const hashPassword = await bcrypt.hash(createUserCustomerDto.password, 5);
-
-    const image = await this.commonService.cloudinaryHost(file);
-
-    user = await this.userModel.create({
-      ...createUserCustomerDto,
-      password: hashPassword,
-      username: createUserCustomerDto.email.split('@')[0],
-      // verificationCode: code,
-      status: EStatus.Verified, // EStatus.NotVerified,
-      dateCreated: Date.now(),
-      ...(image?.secure_url && { avatarURL: image?.secure_url }),
-      ...(image?.public_id && { public_id: image?.public_id })
-    });
-
-    // this.emailService.sendUserConfirmation(user.email, user.verificationCode);
-
-    const { password, verificationCode, __v, ...userDtoReverse } =
-      user.toObject();
-
-    return userDtoReverse;
+  ){
+    // :Promise<object>
+    // let user = await this.userModel.findOne({
+    //   email: createUserCustomerDto.email,
+    //   role: ERole.Customer,
+    // });
+    //
+    // if (user)
+    //   throw new BadRequestException(
+    //     'User customer with current email is registered',
+    //   );
+    //
+    // const hashPassword = await bcrypt.hash(createUserCustomerDto.password, 5);
+    //
+    // const image = await this.commonService.cloudinaryHost(file);
+    //
+    // user = await this.userModel.create({
+    //   ...createUserCustomerDto,
+    //   password: hashPassword,
+    //   username: createUserCustomerDto.email.split('@')[0],
+    //   // verificationCode: code,
+    //   status: EStatus.Verified, // EStatus.NotVerified,
+    //   dateCreated: Date.now(),
+    //   ...(image?.secure_url && { avatarURL: image?.secure_url }),
+    //   ...(image?.public_id && { public_id: image?.public_id })
+    // });
+    //
+    // // this.emailService.sendUserConfirmation(user.email, user.verificationCode);
+    //
+    // const { password, verificationCode, __v, ...userDtoReverse } =
+    //   user.toObject();
+    //
+    // return userDtoReverse;
   }
 
   async updateUser(param, body, file: Express.Multer.File) {
