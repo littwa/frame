@@ -40,13 +40,13 @@ import {
 //     UsersFindDtoExtends,
 //     UserUpdateDto,
 // } from './dto/user.dto';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+// import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 // import { ParamIdDto } from 'src/shared/dto/common.dto';
 // import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 // import { IRequestExt } from '../../shared/interfaces/auth.interfaces';
 
 
-@ApiTags('users')
+// @ApiTags('users')
 @Controller('users')
 export class UsersController {
     // constructor(

@@ -1,5 +1,5 @@
 import { Global, Module } from '@nestjs/common';
-import { UsersService } from './users.service';
+// import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './user.schema';
@@ -30,7 +30,7 @@ import { HttpModule } from '@nestjs/axios';
         HttpModule,
     ],
     providers: [
-        UsersService,
+        // UsersService,
         JwtStrategy,
         {
             provide: APP_GUARD,
@@ -38,6 +38,6 @@ import { HttpModule } from '@nestjs/axios';
         },
     ],
     controllers: [UsersController],
-    exports: [UsersService, MongooseModule],
+    exports: [ MongooseModule], // UsersService,
 })
 export class UsersModule {}
