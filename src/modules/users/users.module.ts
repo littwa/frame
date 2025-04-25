@@ -2,7 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-// import { User, UserSchema } from './user.schema';
+import { User, UserSchema } from './user.schema';
 import { SharedModule } from 'src/shared/shared.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
@@ -16,7 +16,7 @@ import { HttpModule } from '@nestjs/axios';
 @Module({
     imports: [
         MongooseModule.forFeature([
-            // { name: User.name, schema: UserSchema },
+            { name: User.name, schema: UserSchema },
             { name: Session.name, schema: SessionSchema },
         ]),
         JwtModule.registerAsync({
@@ -30,7 +30,7 @@ import { HttpModule } from '@nestjs/axios';
         HttpModule,
     ],
     providers: [
-        // UsersService,
+        UsersService,
         JwtStrategy,
         {
             provide: APP_GUARD,
