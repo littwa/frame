@@ -9,6 +9,8 @@ import * as path from 'path';
 import configuration from 'src/config/base.config';
 import { ConfigModule } from '@nestjs/config';
 import { TesterModule } from './modules/tester/tester.module';
+import { ScreenshotModule } from './modules/screenshot/screenshot.module';
+import { ScreenshotController } from './modules/screenshot/screenshot.controller';
 
 @Module({
   imports: [
@@ -24,9 +26,10 @@ import { TesterModule } from './modules/tester/tester.module';
       serveRoot: '/uploads',
     }),
     UsersModule,
-   TesterModule
+   TesterModule,
+   ScreenshotModule
   ],
-  controllers: [AppController],
+  controllers: [AppController, ScreenshotController],
   providers: [AppService],
 })
 export class AppModule {}

@@ -38,8 +38,7 @@ export class UsersService {
 
   async createUserCustomer(
     createUserCustomerDto: UserCustomerCreateDto, file: Express.Multer.File
-  ){
-    // :Promise<object>
+  ):Promise<object>{
     let user = await this.userModel.findOne({
       email: createUserCustomerDto.email,
       role: ERole.Customer,
