@@ -12,14 +12,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from 'src/modules/users/user.schema';
 import { ERole, EStatus } from 'src/shared/enums/role.enum';
 import { JwtService } from '@nestjs/jwt';
-import { CartProductUserParamDto, UserCustomerCreateDto } from './dto/user.dto';
+import { CartProductUserParamDto, UserCustomerCreateDto } from 'src/modules/users/dto/user.dto';
 import { Session, SessionDocument } from 'src/modules/users/session.schema';
 import { ConfigService } from '@nestjs/config';
 import { CommonService } from 'src/shared/services/common.service';
 import { PAGINATION_USERS_DEFAULT } from 'src/shared/constants/users.constants';
 import { ESortOrderBy, ETokenTypes } from 'src/shared/enums/common.enum';
-import { EComposeType } from 'src/shared/enums/compose.enum';
-import { IRequestExt } from '../../shared/interfaces/auth.interfaces';
+import { EMediaType } from 'src/shared/enums/media.enum';
+import { IRequestExt } from 'src/shared/interfaces/auth.interfaces';
 
 @Injectable()
 export class UsersService {
@@ -73,7 +73,7 @@ export class UsersService {
   }
 
   async updateUser(param, body, file: Express.Multer.File) {
-    if (file && file.mimetype.split('/')[0] !== EComposeType.Image) {
+    if (file && file.mimetype.split('/')[0] !== EMediaType.Image) {
       throw new BadRequestException('Wrong uploaded type file');
     }
 
@@ -82,7 +82,7 @@ export class UsersService {
     if (image && user.public_id) {
       await this.commonService.deleteFromCloudinary(
         user.public_id,
-        EComposeType.Image,
+        EMediaType.Image,
       );
     }
 

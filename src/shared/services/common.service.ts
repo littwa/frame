@@ -12,7 +12,7 @@ import * as axios from 'axios';
 import * as cloudinary from 'cloudinary';
 import * as path from 'path';
 import * as sharp from 'sharp';
-import {EComposeType, EMediaType} from "../enums/compose.enum";
+import { EMediaType } from "../enums/media.enum";
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -46,19 +46,19 @@ export class CommonService {
     let response: cloudinary.UploadApiResponse;
 
     try {
-      if (!Object.values(EComposeType).includes(file.mimetype.split('/')[0] as EComposeType))
+      if (!Object.values(EMediaType).includes(file.mimetype.split('/')[0] as EMediaType))
         new NotFoundException(`Wrong media type (mimetype)`);
 
       let resource_type: 'image' | 'video' | 'raw' | 'auto';
       // file.mimetype.split('/')[0] === EComposeType.Image ? EComposeType.Image : EComposeType.Video;
 
 
-      if (file.mimetype.split('/')[0] === EComposeType.Image){
-        resource_type = EComposeType.Image;
+      if (file.mimetype.split('/')[0] === EMediaType.Image){
+        resource_type = EMediaType.Image;
         file = await this.sharpImgOptimize(file);
       } else {
         // audio type assigned as video in cloudinary;
-        resource_type = EComposeType.Video;
+        resource_type = EMediaType.Video;
       }
 
       const path: string = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
@@ -77,12 +77,12 @@ export class CommonService {
     return response;
   }
 
-  public async deleteFromCloudinary(public_id: string, type: EComposeType | 'image') {
+  public async deleteFromCloudinary(public_id: string, type: EMediaType | 'image') {
     if (!public_id) return;
     cloudinary.v2.config(this.configService.get('cloudinary'));
     return await cloudinary.v2.api.delete_resources([public_id], {
       type: 'upload',
-      resource_type: type === EComposeType.Image ? EComposeType.Image : EComposeType.Video,
+      resource_type: type === EMediaType.Image ? EMediaType.Image : EMediaType.Video,
     });
   }
 

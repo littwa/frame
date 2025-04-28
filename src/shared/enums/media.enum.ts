@@ -1,8 +1,8 @@
-export enum EComposeType {
-    Image = 'image',
-    Video = 'video',
-    Audio = 'audio',
-}
+// export enum EComposeType {
+//     Image = 'image',
+//     Video = 'video',
+//     Audio = 'audio',
+// }
 
 export enum EMediaType {
     Image = 'image',

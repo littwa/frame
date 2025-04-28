@@ -9,6 +9,9 @@ export class ScreenshotList extends Document {
   @Prop({ type: String, required: true })
   name: string;
 
+  @Prop({ type: Array, default: [] })
+  public_id_list: string[];
+
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Screenshot' }] })
   list: ScreenshotDocument[];
 

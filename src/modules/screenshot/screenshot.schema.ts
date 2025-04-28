@@ -6,8 +6,8 @@ export type ScreenshotDocument = Screenshot & Document;
 
 @Schema()
 export class Screenshot extends Document {
-  @Prop({ type: String, required: true })
-  name: string;
+  @Prop({ type: Number, required: true })
+  index: number;
 
   @Prop({ type: String, default: '' })
   description: string;
