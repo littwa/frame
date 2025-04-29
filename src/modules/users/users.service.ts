@@ -19,7 +19,7 @@ import { CommonService } from 'src/shared/services/common.service';
 import { PAGINATION_USERS_DEFAULT } from 'src/shared/constants/users.constants';
 import { ESortOrderBy, ETokenTypes } from 'src/shared/enums/common.enum';
 import { EMediaType } from 'src/shared/enums/media.enum';
-import { IRequestExt } from 'src/shared/interfaces/auth.interfaces';
+import { IRequestExt, IUserExtendReq } from 'src/shared/interfaces/auth.interfaces';
 
 @Injectable()
 export class UsersService {
@@ -108,7 +108,7 @@ export class UsersService {
     return { req: 'logOutUser Success' };
   }
 
-  async getInfoUserCustomer({ _id }) {
+  async getInfoUserCustomer({ uid: _id }: IUserExtendReq) {
     const infoCustomer = await this.userModel.findOne({ _id }); //.populate('customer'); // role: ERole.Customer
     if (!infoCustomer) throw new BadRequestException('Customer was not found.');
     const { password, verificationCode, __v, ...userDtoInfo } =
@@ -138,7 +138,7 @@ export class UsersService {
     ).following;
   }
 
-  async getCurrentUser({ _id }) {
+  async getCurrentUser({ uid: _id }: IUserExtendReq) {
     const infoUser = await this.userModel
       .findOne(
         {
@@ -239,7 +239,7 @@ export class UsersService {
     };
   }
 
-  async getCurrentUserAggregate({ _id }) {
+  async getCurrentUserAggregate({ uid: _id }: IUserExtendReq) {
     const agg = await this.userModel.aggregate([
       { $match: { _id: new mongoose.Types.ObjectId(_id) } },
       // ---------------------start aggregate cart-----------------------------------

@@ -43,7 +43,7 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ParamIdDto } from 'src/shared/dto/common.dto';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
-import { IRequestExt } from '../../shared/interfaces/auth.interfaces';
+import { IRequestExt, IUserExtendReq } from '../../shared/interfaces/auth.interfaces';
 
 
 @ApiTags('users')
@@ -141,7 +141,7 @@ export class UsersController {
 
     @Get('get-aggregate')
     @UseGuards(JwtAuthGuard)
-    getCurrentUserAggregate(@Request() req) {
+    getCurrentUserAggregate(@Request() req: any) {
         // console.log('req.user-', req.user);
         return this.userService.getCurrentUserAggregate(req.user);
     }
