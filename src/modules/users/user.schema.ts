@@ -9,8 +9,8 @@ export class User extends Document {
     @Prop({ type: String, required: true })
     email: string;
 
-    @Prop({ type: String, required: true })
-    dateCreated: Date;
+    @Prop({ type: Number, required: true })
+    dateCreated: Number; // unix
 
     @Prop({ type: String, required: true })
     password: string;
@@ -34,6 +34,9 @@ export class User extends Document {
     })
     status: string;
 
+    @Prop({ type: Date, required: false, default: '' })
+    dayOfBirth: Date; // unix
+
     @Prop({ type: String, required: false, default: '' })
     verificationCode: string;
 
@@ -51,9 +54,6 @@ export class User extends Document {
 
     @Prop({ type: String, required: false, default: '' })
     lastName: string;
-
-    @Prop({ type: String, required: false, default: '' })
-    dayOfBirth: string;
 
     @Prop({ type: String, required: false, default: '' })
     country: string;
