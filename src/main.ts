@@ -31,7 +31,7 @@ async function bootstrap() {
 bootstrap().then(() => console.log(' App was started port:', process.env.PORT || 3000));
 
 const url = `https://frame-oo45.onrender.com/`;
-const interval = 655000; // Interval in milliseconds 555000 (9m 25s)
+const interval = 755000; // Interval in milliseconds 555000 (9m 25s)
 
 function reloadWebsite() {
   axios.get(url)
