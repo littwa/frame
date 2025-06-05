@@ -11,6 +11,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TesterModule } from './modules/tester/tester.module';
 import { ScreenshotModule } from './modules/screenshot/screenshot.module';
 import { ScreenshotController } from './modules/screenshot/screenshot.controller';
+import { RegardModule } from './modules/regard/regard.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { ScreenshotController } from './modules/screenshot/screenshot.controller
     }),
     UsersModule,
    TesterModule,
-   ScreenshotModule
+   ScreenshotModule,
+   RegardModule
   ],
   controllers: [AppController, ScreenshotController],
   providers: [AppService],
