@@ -30,7 +30,7 @@ export class RegardService {
     body: CreateTextDto,
     regardId: string,
   ) {
-    // this.textModel.findOne({ content: body.content });
+    this.textModel.findOne({ content: body.content });
     // const f = await this.textService.find(body.content);
 
     const img = await this.commonService.cloudinaryHost(file, 'regard');
@@ -44,19 +44,19 @@ export class RegardService {
 
     // const text = {_id: 'DELLELELELELELELEbLELELEL!'}
 
-    // const regard = await this.regardModel
-    //   .findByIdAndUpdate(
-    //     regardId,
-    //     {
-    //       $push: { list: text._id },
-    //     },
-    //     { new: true },
-    //   )
-    //   .populate('text');
-    //
-    // if (!text) throw new NotFoundException(`Can't updated Regard`);
-    //
-    // return regard;
+    const regard = await this.regardModel
+      .findByIdAndUpdate(
+        regardId,
+        {
+          $push: { list: text._id },
+        },
+        { new: true },
+      )
+      .populate('text');
+
+    if (!text) throw new NotFoundException(`Can't updated Regard`);
+
+    return regard;
   }
 
   async addTextToRegard(textId: string, regardId: string) {
