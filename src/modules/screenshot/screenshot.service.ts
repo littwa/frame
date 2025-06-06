@@ -17,57 +17,57 @@ export class ScreenshotService {
   ) {
   }
 
-  // async addScreenshotsList(body: CreateScreenshotListDto, req: IRequestExt) {
-  //   return this.screenshotListModel.create({ ...body, author: req.user.uid, created: Date.now() });
-  // }
-  //
-  // async delListAndScreenshots(id: string): Promise<any> {
-  //
-  //   const deleted = await this.screenshotListModel.findByIdAndDelete(id);
-  //   const screenshot = await this.screenshotModel.deleteMany({ _id: { $in: deleted.screenshots } });
-  //
-  //   let cloudinaryResponse = [];
-  //
-  //   for(let i = 0; i < deleted.public_id_screenshots.length; i++) {
-  //     const item = await this.commonService.deleteFromCloudinary(deleted.public_id_screenshots[i], EMediaType.Image);
-  //     cloudinaryResponse.push(item);
-  //   }
-  // }
-  //
-  // async createScreenshotsAndAddToList(files: Array<Express.Multer.File>, body: CreateScreenshotDto, listId: string) {
-  //   let result;
-  //   for (let i = 0; i < files.length; i++) {
-  //     let file = files[i];
-  //     const img = await this.commonService.cloudinaryHost(file, 'screenshot');
-  //     const screenshot = await this.screenshotModel.create({
-  //       // ...body,
-  //       index: i,
-  //       created: Date.now(),
-  //       url: img?.secure_url || '',
-  //       public_id: img?.public_id || '',
-  //     });
-  //     const screenshots = await this.screenshotListModel
-  //       .findByIdAndUpdate(
-  //         listId,
-  //         {
-  //           $push: { screenshots: screenshot._id, public_id_screenshots: screenshot.public_id },
-  //         },
-  //         { new: true, useFindAndModify: false },
-  //       )
-  //       .populate('screenshots');
-  //
-  //     if (!screenshots) throw new NotFoundException(`Can't updated screenshots`);
-  //     if (i === files.length - 1) result = screenshots;
-  //   }
-  //
-  //   return result;
-  // }
-  //
-  // async getScreenshotsLists(req: IRequestExt): Promise<any> {
-  //   const lists = await this.screenshotListModel.find({ author: req.user.uid });
-  //   if (!lists) throw new NotFoundException(`Can't find screenshots lists`);
-  //   return lists;
-  // }
+  async addScreenshotsList(body: CreateScreenshotListDto, req: IRequestExt) {
+    return this.screenshotListModel.create({ ...body, author: req.user.uid, created: Date.now() });
+  }
+
+  async delListAndScreenshots(id: string): Promise<any> {
+
+    const deleted = await this.screenshotListModel.findByIdAndDelete(id);
+    const screenshot = await this.screenshotModel.deleteMany({ _id: { $in: deleted.screenshots } });
+
+    let cloudinaryResponse = [];
+
+    for(let i = 0; i < deleted.public_id_screenshots.length; i++) {
+      const item = await this.commonService.deleteFromCloudinary(deleted.public_id_screenshots[i], EMediaType.Image);
+      cloudinaryResponse.push(item);
+    }
+  }
+
+  async createScreenshotsAndAddToList(files: Array<Express.Multer.File>, body: CreateScreenshotDto, listId: string) {
+    let result;
+    for (let i = 0; i < files.length; i++) {
+      let file = files[i];
+      const img = await this.commonService.cloudinaryHost(file, 'screenshot');
+      const screenshot = await this.screenshotModel.create({
+        // ...body,
+        index: i,
+        created: Date.now(),
+        url: img?.secure_url || '',
+        public_id: img?.public_id || '',
+      });
+      const screenshots = await this.screenshotListModel
+        .findByIdAndUpdate(
+          listId,
+          {
+            $push: { screenshots: screenshot._id, public_id_screenshots: screenshot.public_id },
+          },
+          { new: true, useFindAndModify: false },
+        )
+        .populate('screenshots');
+
+      if (!screenshots) throw new NotFoundException(`Can't updated screenshots`);
+      if (i === files.length - 1) result = screenshots;
+    }
+
+    return result;
+  }
+
+  async getScreenshotsLists(req: IRequestExt): Promise<any> {
+    const lists = await this.screenshotListModel.find({ author: req.user.uid });
+    if (!lists) throw new NotFoundException(`Can't find screenshots lists`);
+    return lists;
+  }
 
   async getScreenshotsListAggregate(listId: string): Promise<any> {
       const listAgg = await this.screenshotListModel.find({ _id: listId }).populate('screenshots');
