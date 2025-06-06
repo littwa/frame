@@ -39,21 +39,21 @@ export class RegardService {
     //   public_id: img?.public_id || '',
     // });
 
-    const text = {_id: 'DELLELELELELELELEbLELELEL!'}
-
-    const regard = await this.regardModel
-      .findByIdAndUpdate(
-        regardId,
-        {
-          $push: { list: text._id },
-        },
-        { new: true },
-      )
-      .populate('text');
-
-    if (!text) throw new NotFoundException(`Can't updated Regard`);
-
-    return regard;
+    // const text = {_id: 'DELLELELELELELELEbLELELEL!'}
+    //
+    // const regard = await this.regardModel
+    //   .findByIdAndUpdate(
+    //     regardId,
+    //     {
+    //       $push: { list: text._id },
+    //     },
+    //     { new: true },
+    //   )
+    //   .populate('text');
+    //
+    // if (!text) throw new NotFoundException(`Can't updated Regard`);
+    //
+    // return regard;
   }
 
   async addTextToRegard(textId: string, regardId: string) {
