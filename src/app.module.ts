@@ -12,6 +12,7 @@ import { TesterModule } from './modules/tester/tester.module';
 import { ScreenshotModule } from './modules/screenshot/screenshot.module';
 import { ScreenshotController } from './modules/screenshot/screenshot.controller';
 import { RegardModule } from './modules/regard/regard.module';
+import { TextService } from './modules/regard/text.service';
 
 @Module({
   imports: [

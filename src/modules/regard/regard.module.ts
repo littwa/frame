@@ -5,14 +5,15 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Regard, RegardSchema } from 'src/modules/regard/regard.schema';
 import { Text, TextSchema } from 'src/modules/regard/text.schema';
 import { CommonService } from 'src/shared/services/common.service';
+import { TextService } from './text.service';
 
 @Module({
   imports: [MongooseModule.forFeature([
     { name: Regard.name, schema: RegardSchema },
     { name: Text.name, schema: TextSchema }
   ])],
-  providers: [RegardService, CommonService],
+  providers: [RegardService, TextService, CommonService],
   controllers: [RegardController],
-  exports: [RegardService]
+  // exports: [RegardService, TextService]
 })
 export class RegardModule {}
