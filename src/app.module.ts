@@ -9,7 +9,7 @@ import * as path from 'path';
 import configuration from 'src/config/base.config';
 import { ConfigModule } from '@nestjs/config';
 import { TesterModule } from './modules/tester/tester.module';
-import { ScreenshotModule } from './modules/screenshot/screenshot.module';
+// import { ScreenshotModule } from './modules/screenshot/screenshot.module';
 import { ScreenshotController } from './modules/screenshot/screenshot.controller';
 import { RegardModule } from './modules/regard/regard.module';
 import { TextService } from './modules/regard/text.service';
