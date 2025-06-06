@@ -12,7 +12,7 @@ import { TextService } from './text.service';
     { name: Regard.name, schema: RegardSchema },
     { name: Text.name, schema: TextSchema }
   ])],
-  providers: [RegardService, TextService, CommonService],
+  providers: [RegardService, CommonService], // TextService,
   controllers: [RegardController],
   // exports: [RegardService, TextService]
 })
