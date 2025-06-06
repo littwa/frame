@@ -13,7 +13,7 @@ export class TextService {
   ) {
   }
 
-  // async find(body) {
-  //    return this.textModel.findOne({ content: body.content });
-  // }
+  async find(body) {
+     return this.textModel.findOne({ content: body.content });
+  }
 }

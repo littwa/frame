@@ -6,6 +6,7 @@ import { Regard, RegardDocument } from 'src/modules/regard/regard.schema';
 import { Model } from 'mongoose';
 import { CommonService } from 'src/shared/services/common.service';
 import { Text, TextDocument } from 'src/modules/regard/text.schema';
+import { TextService } from './text.service';
 
 @Injectable()
 export class RegardService {
@@ -13,6 +14,7 @@ export class RegardService {
     @InjectModel(Regard.name) public regardModel: Model<RegardDocument>,
     @InjectModel(Text.name) private textModel: Model<TextDocument>,
     private commonService: CommonService,
+    private textService: TextService
   ) {}
 
   async addRegard(body: AddRegardDto, req: IRequestExt) {
@@ -29,6 +31,7 @@ export class RegardService {
     regardId: string,
   ) {
     // this.textModel.findOne({ content: body.content });
+    // const f = await this.textService.find(body.content);
 
     // const img = await this.commonService.cloudinaryHost(file, 'regard');
 
@@ -89,13 +92,13 @@ export class RegardService {
   }
 
   async delTextFromRegard(textId: string, regardId: string) {
-    const regard = await this.regardModel.findByIdAndUpdate(
-      regardId,
-      {
-        $pull: { list: textId },
-      },
-      { new: true },
-    );
+    // const regard = await this.regardModel.findByIdAndUpdate(
+    //   regardId,
+    //   {
+    //     $pull: { list: textId },
+    //   },
+    //   { new: true },
+    // );
   }
 
 
