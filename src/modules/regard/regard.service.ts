@@ -30,19 +30,19 @@ export class RegardService {
     body: CreateTextDto,
     regardId: string,
   ) {
-    // this.textModel.findOne({ content: body.content });
+    this.textModel.findOne({ content: body.content });
     // const f = await this.textService.find(body.content);
 
-    // const img = await this.commonService.cloudinaryHost(file, 'regard');
+    const img = await this.commonService.cloudinaryHost(file, 'regard');
 
-    // const text = await this.textModel.create({
-    //   ...body,
-    //   created: Date.now(),
-    //   url: img?.secure_url || '',
-    //   public_id: img?.public_id || '',
-    // });
+    const text = await this.textModel.create({
+      ...body,
+      created: Date.now(),
+      url: img?.secure_url || '',
+      public_id: img?.public_id || '',
+    });
 
-    const text = {_id: 'DELLELELELELELELEbLELELEL!'}
+    // const text = {_id: 'DELLELELELELELELEbLELELEL!'}
 
     const regard = await this.regardModel
       .findByIdAndUpdate(
