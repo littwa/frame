@@ -28,11 +28,13 @@ import { TextService } from './modules/regard/text.service';
       serveRoot: '/uploads',
     }),
     UsersModule,
-   TesterModule,
-   ScreenshotModule,
+    TesterModule,
+   // ScreenshotModule,
    RegardModule
   ],
-  controllers: [AppController, ScreenshotController],
+  controllers: [AppController,
+    // ScreenshotController
+  ],
   providers: [AppService],
 })
 export class AppModule {}
