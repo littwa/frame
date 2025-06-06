@@ -2,15 +2,17 @@ import { Module } from '@nestjs/common';
 import { RegardService } from './regard.service';
 import { RegardController } from './regard.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Regard, RegardSchema } from './regard.schema';
-import { Text, TextSchema } from './text.schema';
+import { Regard, RegardSchema } from 'src/modules/regard/regard.schema';
+import { Text, TextSchema } from 'src/modules/regard/text.schema';
+import { CommonService } from 'src/shared/services/common.service';
 
 @Module({
   imports: [MongooseModule.forFeature([
     { name: Regard.name, schema: RegardSchema },
     { name: Text.name, schema: TextSchema }
   ])],
-  providers: [RegardService],
-  controllers: [RegardController]
+  providers: [RegardService, CommonService],
+  controllers: [RegardController],
+  exports: [RegardService]
 })
 export class RegardModule {}

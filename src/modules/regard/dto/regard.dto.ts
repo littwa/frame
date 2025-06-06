@@ -2,10 +2,20 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsIn, IsOptional, IsString } from 'class-validator';
 import { ETextType } from 'src/shared/enums/regard.enum';
 
-export class ParamIdRegardDto {
+export class ParamIdDto {
   @ApiProperty()
   @IsString()
   readonly id: string;
+}
+
+export class ParamIdTextRegardDto {
+  @ApiProperty()
+  @IsString()
+  readonly textId: string;
+
+  @ApiProperty()
+  @IsString()
+  readonly regardId: string;
 }
 
 export class AddRegardDto {

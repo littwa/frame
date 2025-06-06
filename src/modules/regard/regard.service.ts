@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { IRequestExt } from 'src/shared/interfaces/auth.interfaces';
-import { AddRegardDto, CreateTextDto, ParamIdRegardDto } from 'src/modules/regard/dto/regard.dto';
+import { AddRegardDto, CreateTextDto, ParamIdDto } from 'src/modules/regard/dto/regard.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Regard, RegardDocument } from 'src/modules/regard/regard.schema';
 import { Model } from 'mongoose';
@@ -94,5 +94,18 @@ export class RegardService {
       },
       { new: true },
     );
+  }
+
+
+  async getRegards(req: IRequestExt) {
+    const regards = await this.regardModel.find({ author: req.user.uid });
+    if (!regards) throw new NotFoundException(`Can't find regard lists`);
+    return regards;
+  }
+
+  async getRegardAggregated(regardId: string) {
+    const regard = await this.regardModel.find({ _id: regardId }).populate('list');
+    if (!regard) throw new NotFoundException(`Can't find list`);
+    return regard[0];
   }
 }

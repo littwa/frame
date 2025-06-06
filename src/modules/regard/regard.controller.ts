@@ -1,6 +1,6 @@
 import {
   Body,
-  Controller, Delete,
+  Controller, Delete, Get,
   HttpCode,
   HttpStatus, Param, Patch,
   Post,
@@ -16,8 +16,9 @@ import { Roles } from 'src/authorization/roles.decorator';
 import { ERole } from 'src/shared/enums/role.enum';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { IRequestExt } from 'src/shared/interfaces/auth.interfaces';
-import { AddRegardDto, CreateTextDto, ParamIdRegardDto } from 'src/modules/regard/dto/regard.dto';
+import { AddRegardDto, CreateTextDto, ParamIdDto, ParamIdTextRegardDto } from 'src/modules/regard/dto/regard.dto';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
+import { ParamIdScreenshotDto } from '../screenshot/dto/screenshot.dto';
 
 @Controller('regard')
 export class RegardController {
@@ -49,7 +50,7 @@ export class RegardController {
   @HttpCode(HttpStatus.CREATED)
   async createTextAndAddToRegard(@UploadedFiles() files: Array<Express.Multer.File>,
                                       @Body() body: CreateTextDto,
-                                      @Param() param: ParamIdRegardDto) {
+                                      @Param() param: ParamIdDto) {
     return this.regardService.createTextAndAddToRegard(files[0], body, param.id);
   }
 
@@ -57,14 +58,13 @@ export class RegardController {
   @ApiResponse({ status: 201, description: 'Return added Text to Regard.' })
   @ApiResponse({ status: 404, description: 'Can not added Text to Regard.' })
   @ApiBearerAuth()
-  @Post('add-text/:id')
+  @Post('add-text/:textId/:regardId')
   @Roles([ERole.Admin, ERole.Customer])
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
-  async addTextToRegard(@Param() paramText: ParamIdRegardDto,
-                                 @Param() paramRegard: ParamIdRegardDto) {
-    return this.regardService.addTextToRegard(paramText.id, paramRegard.id);
+  async addTextToRegard(@Param() param: ParamIdTextRegardDto) {
+    return this.regardService.addTextToRegard(param.textId, param.regardId);
   }
 
   @ApiOperation({ summary: 'Del Regard' })
@@ -76,7 +76,7 @@ export class RegardController {
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
-  async delRegard(@Param() param: ParamIdRegardDto) {
+  async delRegard(@Param() param: ParamIdDto) {
     return await this.regardService.delRegard(param.id);
   }
 
@@ -90,7 +90,46 @@ export class RegardController {
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(AnyFilesInterceptor())
   @HttpCode(HttpStatus.CREATED)
-  async updateText(@UploadedFiles() files: Array<Express.Multer.File>, @Param() param: ParamIdRegardDto, @Body()body: any) {
+  async updateText(@UploadedFiles() files: Array<Express.Multer.File>, @Param() param: ParamIdDto, @Body()body: any) {
     return await this.regardService.updateText(files[0], body, param.id);
+  }
+
+  @ApiOperation({ summary: 'Del Text from Regard' })
+  @ApiResponse({ status: 201, description: 'Return Regard.' })
+  @ApiResponse({ status: 404, description: 'Can not del Text from Regard.' })
+  @ApiBearerAuth()
+  @Delete('del-text/:textId/:regardId')
+  @Roles([ERole.Admin, ERole.Customer])
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.CREATED)
+  async delTextFromRegard(@Param() param: ParamIdTextRegardDto) {
+    return this.regardService.delTextFromRegard(param.textId, param.regardId);
+  }
+
+  @ApiOperation({ summary: 'Get regards lists' })
+  @ApiResponse({ status: 200, description: 'Return regards lists.' })
+  @ApiResponse({ status: 404, description: 'Can not get regards lists.' })
+  @ApiBearerAuth()
+  @Get('get-regards')
+  @Roles([ERole.Admin, ERole.Customer])
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async getRegards(@Req() req: IRequestExt) {
+    return this.regardService.getRegards(req);
+  }
+
+  @ApiOperation({ summary: 'Get user regard aggregated' })
+  @ApiResponse({ status: 200, description: 'Return user regard aggregated.' })
+  @ApiResponse({ status: 404, description: 'Can not get user regard aggregated.' })
+  @ApiBearerAuth()
+  @Get('get-regard/:id')
+  @Roles([ERole.Admin, ERole.Customer])
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async getRegardAggregated(@Param() param: ParamIdDto) {
+    return this.regardService.getRegardAggregated(param.id);
   }
 }
