@@ -16,11 +16,11 @@ export class RegardService {
   ) {}
 
   async addRegard(body: AddRegardDto, req: IRequestExt) {
-    return this.regardModel.create({
-      ...body,
-      author: req.user.uid,
-      created: Date.now(),
-    });
+    // return this.regardModel.create({
+    //   ...body,
+    //   author: req.user.uid,
+    //   created: Date.now(),
+    // });
   }
 
   async createTextAndAddToRegard(
@@ -28,58 +28,58 @@ export class RegardService {
     body: CreateTextDto,
     regardId: string,
   ) {
-    this.textModel.findOne({ content: body.content });
-
-    const img = await this.commonService.cloudinaryHost(file, 'regard');
-
-    const text = await this.textModel.create({
-      ...body,
-      created: Date.now(),
-      url: img?.secure_url || '',
-      public_id: img?.public_id || '',
-    });
-
-    const regard = await this.regardModel
-      .findByIdAndUpdate(
-        regardId,
-        {
-          $push: { list: text._id },
-        },
-        { new: true },
-      )
-      .populate('text');
-
-    if (!text) throw new NotFoundException(`Can't updated Regard`);
-
-    return regard;
+    // this.textModel.findOne({ content: body.content });
+    //
+    // const img = await this.commonService.cloudinaryHost(file, 'regard');
+    //
+    // const text = await this.textModel.create({
+    //   ...body,
+    //   created: Date.now(),
+    //   url: img?.secure_url || '',
+    //   public_id: img?.public_id || '',
+    // });
+    //
+    // const regard = await this.regardModel
+    //   .findByIdAndUpdate(
+    //     regardId,
+    //     {
+    //       $push: { list: text._id },
+    //     },
+    //     { new: true },
+    //   )
+    //   .populate('text');
+    //
+    // if (!text) throw new NotFoundException(`Can't updated Regard`);
+    //
+    // return regard;
   }
 
   async addTextToRegard(textId: string, regardId: string) {
-    const regard = await this.regardModel
-      .findByIdAndUpdate(
-        regardId,
-        {
-          $push: { list: textId },
-        },
-        { new: true },
-      )
-      .populate('text');
-
-    return regard;
+    // const regard = await this.regardModel
+    //   .findByIdAndUpdate(
+    //     regardId,
+    //     {
+    //       $push: { list: textId },
+    //     },
+    //     { new: true },
+    //   )
+    //   .populate('text');
+    //
+    // return regard;
   }
 
   async delRegard(regardId: string) {
-    const deleted = await this.regardModel.findByIdAndDelete(regardId);
-    // const screenshot = await this.textModel.deleteMany({ _id: { $in: deleted.screenshots } });
-
-    const regard = await this.textModel.updateMany(
-      {
-        $in: [], // arr all textId from deleted Regard;
-      },
-      {
-        $pull: { regards: regardId },
-      }
-    );
+    // const deleted = await this.regardModel.findByIdAndDelete(regardId);
+    // // const screenshot = await this.textModel.deleteMany({ _id: { $in: deleted.screenshots } });
+    //
+    // const regard = await this.textModel.updateMany(
+    //   {
+    //     $in: [], // arr all textId from deleted Regard;
+    //   },
+    //   {
+    //     $pull: { regards: regardId },
+    //   }
+    // );
   }
 
   async updateText(file: Express.Multer.File, body, textId: string) {
@@ -87,25 +87,25 @@ export class RegardService {
   }
 
   async delTextFromRegard(textId: string, regardId: string) {
-    const regard = await this.regardModel.findByIdAndUpdate(
-      regardId,
-      {
-        $pull: { list: textId },
-      },
-      { new: true },
-    );
+    // const regard = await this.regardModel.findByIdAndUpdate(
+    //   regardId,
+    //   {
+    //     $pull: { list: textId },
+    //   },
+    //   { new: true },
+    // );
   }
 
 
   async getRegards(req: IRequestExt) {
-    const regards = await this.regardModel.find({ author: req.user.uid });
-    if (!regards) throw new NotFoundException(`Can't find regard lists`);
-    return regards;
+    // const regards = await this.regardModel.find({ author: req.user.uid });
+    // if (!regards) throw new NotFoundException(`Can't find regard lists`);
+    // return regards;
   }
 
   async getRegardAggregated(regardId: string) {
-    const regard = await this.regardModel.find({ _id: regardId }).populate('list');
-    if (!regard) throw new NotFoundException(`Can't find list`);
-    return regard[0];
+  //   const regard = await this.regardModel.find({ _id: regardId }).populate('list');
+  //   if (!regard) throw new NotFoundException(`Can't find list`);
+  //   return regard[0];
   }
 }
