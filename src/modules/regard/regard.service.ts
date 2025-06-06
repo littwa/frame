@@ -85,17 +85,17 @@ export class RegardService {
   }
 
   async updateText(file: Express.Multer.File, body, textId: string) {
-    return Promise.resolve(undefined);
+    // return Promise.resolve(undefined);
   }
 
   async delTextFromRegard(textId: string, regardId: string) {
-    const regard = await this.regardModel.findByIdAndUpdate(
-      regardId,
-      {
-        $pull: { list: textId },
-      },
-      { new: true },
-    );
+    // const regard = await this.regardModel.findByIdAndUpdate(
+    //   regardId,
+    //   {
+    //     $pull: { list: textId },
+    //   },
+    //   { new: true },
+    // );
   }
 
 
