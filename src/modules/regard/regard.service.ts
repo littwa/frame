@@ -16,11 +16,11 @@ export class RegardService {
   ) {}
 
   async addRegard(body: AddRegardDto, req: IRequestExt) {
-    // return this.regardModel.create({
-    //   ...body,
-    //   author: req.user.uid,
-    //   created: Date.now(),
-    // });
+    return this.regardModel.create({
+      ...body,
+      author: req.user.uid,
+      created: Date.now(),
+    });
   }
 
   async createTextAndAddToRegard(
@@ -28,30 +28,30 @@ export class RegardService {
     body: CreateTextDto,
     regardId: string,
   ) {
-    // this.textModel.findOne({ content: body.content });
-    //
-    // const img = await this.commonService.cloudinaryHost(file, 'regard');
-    //
-    // const text = await this.textModel.create({
-    //   ...body,
-    //   created: Date.now(),
-    //   url: img?.secure_url || '',
-    //   public_id: img?.public_id || '',
-    // });
-    //
-    // const regard = await this.regardModel
-    //   .findByIdAndUpdate(
-    //     regardId,
-    //     {
-    //       $push: { list: text._id },
-    //     },
-    //     { new: true },
-    //   )
-    //   .populate('text');
-    //
-    // if (!text) throw new NotFoundException(`Can't updated Regard`);
-    //
-    // return regard;
+    this.textModel.findOne({ content: body.content });
+
+    const img = await this.commonService.cloudinaryHost(file, 'regard');
+
+    const text = await this.textModel.create({
+      ...body,
+      created: Date.now(),
+      url: img?.secure_url || '',
+      public_id: img?.public_id || '',
+    });
+
+    const regard = await this.regardModel
+      .findByIdAndUpdate(
+        regardId,
+        {
+          $push: { list: text._id },
+        },
+        { new: true },
+      )
+      .populate('text');
+
+    if (!text) throw new NotFoundException(`Can't updated Regard`);
+
+    return regard;
   }
 
   async addTextToRegard(textId: string, regardId: string) {
