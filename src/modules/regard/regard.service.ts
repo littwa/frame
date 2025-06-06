@@ -39,7 +39,7 @@ export class RegardService {
       public_id: img?.public_id || '',
     });
 
-    // const text = {_id: 'DELLELELELELELELELELELEL!'}
+    // const text = {_id: 'DELLELELELELELELEbLELELEL!'}
 
     const regard = await this.regardModel
       .findByIdAndUpdate(
