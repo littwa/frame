@@ -74,17 +74,17 @@ export class RegardService {
   }
 
   async delRegard(regardId: string) {
-    // const deleted = await this.regardModel.findByIdAndDelete(regardId);
-    // // const screenshot = await this.textModel.deleteMany({ _id: { $in: deleted.screenshots } });
-    //
-    // const regard = await this.textModel.updateMany(
-    //   {
-    //     $in: [], // arr all textId from deleted Regard;
-    //   },
-    //   {
-    //     $pull: { regards: regardId },
-    //   }
-    // );
+    const deleted = await this.regardModel.findByIdAndDelete(regardId);
+    // const screenshot = await this.textModel.deleteMany({ _id: { $in: deleted.screenshots } });
+
+    const regard = await this.textModel.updateMany(
+      {
+        $in: [], // arr all textId from deleted Regard;
+      },
+      {
+        $pull: { regards: regardId },
+      }
+    );
   }
 
   async updateText(file: Express.Multer.File, body, textId: string) {
