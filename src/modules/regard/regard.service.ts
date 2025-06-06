@@ -57,17 +57,17 @@ export class RegardService {
   }
 
   async addTextToRegard(textId: string, regardId: string) {
-    const regard = await this.regardModel
-      .findByIdAndUpdate(
-        regardId,
-        {
-          $push: { list: textId },
-        },
-        { new: true },
-      )
-      .populate('text');
-
-    return regard;
+    // const regard = await this.regardModel
+    //   .findByIdAndUpdate(
+    //     regardId,
+    //     {
+    //       $push: { list: textId },
+    //     },
+    //     { new: true },
+    //   )
+    //   .populate('text');
+    //
+    // return regard;
   }
 
   async delRegard(regardId: string) {
