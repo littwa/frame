@@ -31,7 +31,7 @@ export class RegardService {
     regardId: string,
   ) {
     // this.textModel.findOne({ content: body.content });
-    const f = await this.textService.find(body.content);
+    // const f = await this.textService.find(body.content);
 
     // const img = await this.commonService.cloudinaryHost(file, 'regard');
 
