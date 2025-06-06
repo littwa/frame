@@ -92,13 +92,13 @@ export class RegardService {
   }
 
   async delTextFromRegard(textId: string, regardId: string) {
-    // const regard = await this.regardModel.findByIdAndUpdate(
-    //   regardId,
-    //   {
-    //     $pull: { list: textId },
-    //   },
-    //   { new: true },
-    // );
+    const regard = await this.regardModel.findByIdAndUpdate(
+      regardId,
+      {
+        $pull: { list: textId },
+      },
+      { new: true },
+    );
   }
 
 
