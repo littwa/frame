@@ -16,7 +16,7 @@ import { Roles } from 'src/authorization/roles.decorator';
 import { ERole } from 'src/shared/enums/role.enum';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { IRequestExt } from 'src/shared/interfaces/auth.interfaces';
-import { AddRegardDto, CreateTextDto, ParamIdDto, ParamIdTextRegardDto } from 'src/modules/regard/dto/regard.dto';
+import { AddRegardDto, TextDto, ParamIdDto, ParamIdTextRegardDto } from 'src/modules/regard/dto/regard.dto';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { ParamIdScreenshotDto } from '../screenshot/dto/screenshot.dto';
 
@@ -49,9 +49,10 @@ export class RegardController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
   async createTextAndAddToRegard(@UploadedFiles() files: Array<Express.Multer.File>,
-                                      @Body() body: CreateTextDto,
-                                      @Param() param: ParamIdDto) {
-    return this.regardService.createTextAndAddToRegard(files[0], body, param.id);
+                                      @Body() body: TextDto,
+                                      @Param() param: ParamIdDto,
+                                      @Req() req: IRequestExt) {
+    return this.regardService.createTextAndAddToRegard(files[0], body, param.id, req);
   }
 
   @ApiOperation({ summary: 'Add Text to Regard' })
@@ -91,20 +92,20 @@ export class RegardController {
   @UseInterceptors(AnyFilesInterceptor())
   @HttpCode(HttpStatus.CREATED)
   async updateText(@UploadedFiles() files: Array<Express.Multer.File>, @Param() param: ParamIdDto, @Body()body: any) {
-    return await this.regardService.updateText(files[0], body, param.id);
+    return await this.regardService.updateText(files[0], body);
   }
 
   @ApiOperation({ summary: 'Del Text from Regard' })
   @ApiResponse({ status: 201, description: 'Return Regard.' })
   @ApiResponse({ status: 404, description: 'Can not del Text from Regard.' })
   @ApiBearerAuth()
-  @Delete('del-text/:textId/:regardId')
+  @Delete('del-text/:textId/:regardId/:idxText')
   @Roles([ERole.Admin, ERole.Customer])
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
   async delTextFromRegard(@Param() param: ParamIdTextRegardDto) {
-    return this.regardService.delTextFromRegard(param.textId, param.regardId);
+    return await this.regardService.delTextFromRegard(param.textId, param.regardId, param.idxText);
   }
 
   @ApiOperation({ summary: 'Get regards lists' })
@@ -131,5 +132,20 @@ export class RegardController {
   @HttpCode(HttpStatus.OK)
   async getRegardAggregated(@Param() param: ParamIdDto) {
     return this.regardService.getRegardAggregated(param.id);
+  }
+
+  @ApiOperation({ summary: 'Create Qualify' })
+  @ApiResponse({ status: 201, description: 'Return created Qualify' })
+  @ApiResponse({ status: 404, description: 'Can not create Qualify.' })
+  @ApiBearerAuth()
+  @Post('create-qualify/:id')
+  @Roles([ERole.Admin, ERole.Customer])
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.CREATED)
+  async createQualify(@Body() body: TextDto,
+                                 @Param() param: ParamIdDto,
+                                 @Req() req: IRequestExt) {
+    return this.regardService.createQualify(body, param.id, req);
   }
 }

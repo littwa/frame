@@ -11,7 +11,7 @@ export class Regard extends Document {
   @Prop({ type: String, required: true })
   name: string;
 
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Phrase' }] })
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Text' }] })
   list: TextDocument[];
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Qualify' }] })

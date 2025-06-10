@@ -24,7 +24,7 @@ import { IRequestExt, IUserExtendReq } from 'src/shared/interfaces/auth.interfac
 @Injectable()
 export class UsersService {
   public refreshTokenPath = 'jwtExpires._30days'; // 'jwtExpires._100Seconds';  // 'jwtExpires._30days';
-  public accessTokenPath = 'jwtExpires._1hour'; // 'jwtExpires._30Seconds'; // 'jwtExpires._60Seconds'; // 'jwtExpires._1hour'; //
+  public accessTokenPath = 'jwtExpires._8hour'; // 'jwtExpires._8hour'; // 'jwtExpires._60Seconds'; // 'jwtExpires._1hour'; //
 
   constructor(
     @InjectModel(Session.name) public sessionModel: Model<SessionDocument>,

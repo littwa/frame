@@ -20,7 +20,7 @@ export class Qualify extends Document {
   repeat: number;
 
   @Prop({ type: Object, required: true })
-  progress: { [textId: string]: number }; // define type, exam: 1_8
+  progress: { [i: string]: number }; // define type: key='i_number'; value: number
 
   @Prop({ type: String, default: EQualifyAnswers.Global, enum: EQualifyAnswers })
   answersVariant: EQualifyAnswers;

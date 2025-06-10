@@ -16,6 +16,10 @@ export class ParamIdTextRegardDto {
   @ApiProperty()
   @IsString()
   readonly regardId: string;
+
+  @ApiProperty()
+  @IsString()
+  readonly idxText: string
 }
 
 export class AddRegardDto {
@@ -24,19 +28,21 @@ export class AddRegardDto {
   readonly name: string;
 }
 
-export class CreateTextDto {
+export class TextDto {
   @ApiProperty()
   @IsString()
   content: string;
 
   @ApiProperty()
   @IsArray()
-  synonyms: string[];
-
-  @ApiProperty()
-  @IsArray()
   translation: string[];
 
+  @IsOptional()
+  @ApiProperty()
+  @IsArray()
+  synonyms: string[];
+
+  @IsOptional()
   @ApiProperty()
   @IsIn([ETextType.Word, ETextType.Phrase, ETextType.Sentence])
   type: ETextType;

@@ -29,7 +29,7 @@ export class Text extends Document {
   @Prop({ type: Array<string>, default: [] })
   statistics: string[];
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, default: '' })
   img: string;
 
   @Prop({type: String, default: '' }) // for del files from cloudinary
@@ -47,7 +47,7 @@ export class Text extends Document {
   @Prop({type: Boolean, default: false })
   inQualify: boolean;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
   author: UserDocument;
 }
 
