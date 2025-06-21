@@ -15,12 +15,12 @@ export class Regard extends Document {
   list: TextDocument[];
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Qualify' }] })
-  qualify: QualifyDocument[];
+  qualifies: QualifyDocument[];
 
   @Prop({ type: Number, default: 0 })
   qualifyAmount: number;
 
-  @Prop({type: Boolean, default: false})
+  @Prop({type: Boolean, default: false })
   qualifyInProgress: boolean;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })

@@ -16,7 +16,13 @@ import { Roles } from 'src/authorization/roles.decorator';
 import { ERole } from 'src/shared/enums/role.enum';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { IRequestExt } from 'src/shared/interfaces/auth.interfaces';
-import { AddRegardDto, TextDto, ParamIdDto, ParamIdTextRegardDto } from 'src/modules/regard/dto/regard.dto';
+import {
+  AddRegardDto,
+  TextDto,
+  ParamIdDto,
+  ParamIdTextRegardDto,
+  CreateQualifyDto, ParamIdTextRegardQualifyDto, CheckQualifyDto, TextDtoFind,
+} from 'src/modules/regard/dto/regard.dto';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { ParamIdScreenshotDto } from '../screenshot/dto/screenshot.dto';
 
@@ -105,7 +111,7 @@ export class RegardController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
   async delTextFromRegard(@Param() param: ParamIdTextRegardDto) {
-    return await this.regardService.delTextFromRegard(param.textId, param.regardId, param.idxText);
+    return await this.regardService.delTextFromRegard(param.textId, param.regardId);
   }
 
   @ApiOperation({ summary: 'Get regards lists' })
@@ -143,9 +149,76 @@ export class RegardController {
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
-  async createQualify(@Body() body: TextDto,
+  async createQualify(@Body() body: CreateQualifyDto,
                                  @Param() param: ParamIdDto,
                                  @Req() req: IRequestExt) {
     return this.regardService.createQualify(body, param.id, req);
+  }
+
+  @ApiOperation({ summary: 'Check Qualify' })
+  @ApiResponse({ status: 201, description: 'Return Checked Qualify' })
+  @ApiResponse({ status: 404, description: 'Can not Checked Qualify.' })
+  @ApiBearerAuth()
+  @Patch('check-qualify/:textId/:regardId/:qualifyId')
+  @Roles([ERole.Admin, ERole.Customer])
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.CREATED)
+  async checkQualify(@Body() body: CheckQualifyDto,
+                      @Param() param: ParamIdTextRegardQualifyDto,
+                      @Req() req: IRequestExt) {
+    return this.regardService.checkQualifyExec(body, param, req);
+  }
+
+  @ApiOperation({ summary: 'Start Next Lap Qualify' })
+  @ApiResponse({ status: 201, description: 'Return Updated Qualify' })
+  @ApiResponse({ status: 404, description: 'Can not Updated Qualify.' })
+  @ApiBearerAuth()
+  @Patch('lap-qualify/:id')
+  @Roles([ERole.Admin, ERole.Customer])
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.CREATED)
+  async startNextLap(@Param() param: ParamIdDto) {
+    return this.regardService.startNextLap(param.id);
+  }
+
+  @ApiOperation({ summary: 'Reset Quality Text Lap' })
+  @ApiResponse({ status: 201, description: 'Return Updated Qualify' })
+  @ApiResponse({ status: 404, description: 'Can not Updated Qualify.' })
+  @ApiBearerAuth()
+  @Patch('reset-text-qualify/:textId/:regardId/:qualifyId')
+  @Roles([ERole.Admin, ERole.Customer])
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.CREATED)
+  async resetQualityTextLap(@Param() param: ParamIdTextRegardQualifyDto) {
+    return this.regardService.resetQualityTextLap(param);
+  }
+
+  @ApiOperation({ summary: 'Mark As Finish Quality Text Lap' })
+  @ApiResponse({ status: 201, description: 'Return Updated Qualify' })
+  @ApiResponse({ status: 404, description: 'Can not Updated Qualify.' })
+  @ApiBearerAuth()
+  @Patch('mark-text-qualify/:id')
+  @Roles([ERole.Admin, ERole.Customer])
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.CREATED)
+  async markAsFinishQualityTextLap(@Param() param: ParamIdTextRegardQualifyDto) {
+    return this.regardService.markAsFinishQualityTextLap(param);
+  }
+
+  @ApiOperation({ summary: 'Find texts by content lists.' })
+  @ApiResponse({ status: 200, description: 'Return Found texts.' })
+  @ApiResponse({ status: 404, description: 'Can not find texts.' })
+  @ApiBearerAuth()
+  @Get('find-texts/:content')
+  @Roles([ERole.Admin, ERole.Customer])
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async findTexts(@Req() req: IRequestExt, @Param() param: TextDtoFind) {
+    return this.regardService.findTexts(param.content);
   }
 }

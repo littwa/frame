@@ -3,6 +3,7 @@ import mongoose, { Document, ObjectId, Types } from 'mongoose';
 import { ETextType } from '../../shared/enums/regard.enum';
 import { RegardDocument } from './regard.schema';
 import { UserDocument } from '../users/user.schema';
+import { QualifyDocument } from './qualify.schema';
 // import * as mongoose from 'mongoose';
 // import { IDate } from 'src/shared/interfaces/prop.interfaces';
 // import { EPhraseDifficult, EPhraseResults, EPhraseType } from '../../shared/enums/wit.enum';
@@ -44,8 +45,8 @@ export class Text extends Document {
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Regard' }] })
   regards: RegardDocument[];
 
-  @Prop({type: Boolean, default: false })
-  inQualify: boolean;
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Qualify' }] })
+  qualifies: QualifyDocument[];
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
   author: UserDocument;
