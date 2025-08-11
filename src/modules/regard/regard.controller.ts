@@ -105,7 +105,7 @@ export class RegardController {
   @ApiResponse({ status: 201, description: 'Return Regard.' })
   @ApiResponse({ status: 404, description: 'Can not del Text from Regard.' })
   @ApiBearerAuth()
-  @Delete('del-text/:textId/:regardId/:idxText')
+  @Delete('del-text/:textId/:regardId')
   @Roles([ERole.Admin, ERole.Customer])
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @UseGuards(JwtAuthGuard)
