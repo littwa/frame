@@ -415,6 +415,6 @@ export class RegardService {
   }
 
   async findTexts(content: string) {
-    return this.textModel.find({ content }).limit( 15 );
+    return this.textModel.find({ content: { $regex: content, $options: "i" } }).limit( 15 );
   }
 }
