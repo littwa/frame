@@ -53,7 +53,7 @@ export class RegardService {
 
     const text = await this.textModel.create({
       ...body,
-      regards: [new mongoose.Types.ObjectId(regardId)],
+      regards: [], // new mongoose.Types.ObjectId(regardId) // will be added in addTextToRegard;
       pronunciation,
       img: img?.secure_url || '',
       public_id: img?.public_id || '',
@@ -125,7 +125,7 @@ export class RegardService {
 
     return this.textModel.updateMany(
       {
-        $in: deletedRegard.list, // arr all textId from deleted Regard;
+        _id: { $in: deletedRegard.list } // arr all textId from deleted Regard;}
       },
       {
         $pull: { regards: regardId },
