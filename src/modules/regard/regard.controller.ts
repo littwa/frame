@@ -200,7 +200,7 @@ export class RegardController {
   @ApiResponse({ status: 201, description: 'Return Updated Qualify' })
   @ApiResponse({ status: 404, description: 'Can not Updated Qualify.' })
   @ApiBearerAuth()
-  @Patch('mark-text-qualify/:id')
+  @Patch('mark-text-qualify/:textId/:regardId/:qualifyId')
   @Roles([ERole.Admin, ERole.Customer])
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @UseGuards(JwtAuthGuard)
