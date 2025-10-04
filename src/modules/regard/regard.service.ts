@@ -357,7 +357,7 @@ export class RegardService {
     // if(qualify.finished) new NotFoundException(`Preceding lap not finished yet`);
 
     qualify.progress[textId] = qualify.repeat;
-    qualify.finishedLap = true;
+    // qualify.finishedLap = true;
 
     let finished: boolean = true;
 
