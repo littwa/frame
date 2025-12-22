@@ -19,21 +19,22 @@ module.exports = {
         '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
-        // 'no-unused-expressions': [2, { allowTernary: true } ],
         '@typescript-eslint/no-unused-expressions': ['error', { allowShortCircuit: true, allowTernary: true }],
         'prettier/prettier': [
-            'error',
-            {
-                endOfLine: 'auto',
-                // tabWidth: 4,
-            },
             'off',
-            {
-                tabWidth: 2,
-            },
+            // 'error',
+            // {
+            //     endOfLine: 'auto',
+            //     tabWidth: 2,
+            // },
+            // 'off',
+            // {
+            //     // tabWidth: 2,
+            //     // endOfLine: 'auto',
+            // },
             // 'warn',
             // {
-            //     tabWidth: 4,
+            //     tabWidth: 2,
             //     endOfLine: 'auto',
             // },
         ],
