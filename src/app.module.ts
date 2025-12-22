@@ -29,10 +29,11 @@ import { RegardModule } from './modules/regard/regard.module';
     }),
     UsersModule,
     TesterModule,
-   ScreenshotModule,
-   RegardModule
+    ScreenshotModule,
+    RegardModule,
   ],
-  controllers: [AppController,
+  controllers: [
+    AppController,
     // ScreenshotController
   ],
   providers: [AppService],

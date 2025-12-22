@@ -7,7 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
 import { TesterAService } from './tester.a.service';
 import { TesterBService } from './tester.b.service';
-import {CommonService} from "../../shared/services/common.service";
+import { CommonService } from 'src/shared/services/common.service';
 
 //=============================================================
 @Injectable()

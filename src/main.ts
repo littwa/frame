@@ -34,7 +34,8 @@ const url = `https://frame-oo45.onrender.com/`;
 const interval = 755000; // Interval in milliseconds 555000 (9m 25s)
 
 function reloadWebsite() {
-  axios.get(url)
+  axios
+    .get(url)
     .then(response => {
       console.log(`Reloaded at ${new Date().toISOString()}: Status Code ${response.status}`);
     })

@@ -20,7 +20,7 @@ export class Regard extends Document {
   @Prop({ type: Number, default: 0 })
   qualifyAmount: number;
 
-  @Prop({type: Boolean, default: false })
+  @Prop({ type: Boolean, default: false })
   qualifyInProgress: boolean;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })

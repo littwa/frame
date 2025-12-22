@@ -2,12 +2,7 @@ import * as mongoose from 'mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import * as cloudinary from 'cloudinary';
-import {
-  BadRequestException,
-  Inject,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from 'src/modules/users/user.schema';
 import { ERole, EStatus } from 'src/shared/enums/role.enum';
@@ -36,18 +31,13 @@ export class UsersService {
     private commonService: CommonService,
   ) {}
 
-  async createUserCustomer(
-    createUserCustomerDto: UserCustomerCreateDto, file: Express.Multer.File
-  ):Promise<object>{
+  async createUserCustomer(createUserCustomerDto: UserCustomerCreateDto, file: Express.Multer.File): Promise<object> {
     let user = await this.userModel.findOne({
       email: createUserCustomerDto.email,
       role: ERole.Customer,
     });
 
-    if (user)
-      throw new BadRequestException(
-        'User customer with current email is registered',
-      );
+    if (user) throw new BadRequestException('User customer with current email is registered');
 
     const hashPassword = await bcrypt.hash(createUserCustomerDto.password, 5);
 
@@ -61,13 +51,12 @@ export class UsersService {
       status: EStatus.Verified, // EStatus.NotVerified,
       dateCreated: Date.now(),
       ...(image?.secure_url && { avatarURL: image?.secure_url }),
-      ...(image?.public_id && { public_id: image?.public_id })
+      ...(image?.public_id && { public_id: image?.public_id }),
     });
 
     // this.emailService.sendUserConfirmation(user.email, user.verificationCode);
 
-    const { password, verificationCode, __v, ...userDtoReverse } =
-      user.toObject();
+    const { password, verificationCode, __v, ...userDtoReverse } = user.toObject();
 
     return userDtoReverse;
   }
@@ -80,13 +69,10 @@ export class UsersService {
     const user = await this.userModel.findById(param.id).exec();
     const image = await this.commonService.cloudinaryHost(file);
     if (image && user.public_id) {
-      await this.commonService.deleteFromCloudinary(
-        user.public_id,
-        EMediaType.Image,
-      );
+      await this.commonService.deleteFromCloudinary(user.public_id, EMediaType.Image);
     }
 
-    for (let key in body) {
+    for (const key in body) {
       user[key] = body[key];
     }
 
@@ -99,9 +85,7 @@ export class UsersService {
   }
 
   async signOutUser(parsedToken) {
-    const deletedSession = await this.sessionModel.findByIdAndDelete(
-      parsedToken.sid,
-    );
+    const deletedSession = await this.sessionModel.findByIdAndDelete(parsedToken.sid);
     if (!deletedSession) {
       throw new BadRequestException('No current session');
     }
@@ -111,8 +95,7 @@ export class UsersService {
   async getInfoUserCustomer({ uid: _id }: IUserExtendReq) {
     const infoCustomer = await this.userModel.findOne({ _id }); //.populate('customer'); // role: ERole.Customer
     if (!infoCustomer) throw new BadRequestException('Customer was not found.');
-    const { password, verificationCode, __v, ...userDtoInfo } =
-      infoCustomer.toObject();
+    const { password, verificationCode, __v, ...userDtoInfo } = infoCustomer.toObject();
     return userDtoInfo;
   }
 
@@ -127,15 +110,11 @@ export class UsersService {
   }
 
   async getUserFollowersById(id) {
-    return (
-      await this.userModel.findById(id, { followers: 1 }).populate('followers')
-    ).followers;
+    return (await this.userModel.findById(id, { followers: 1 }).populate('followers')).followers;
   }
 
   async getUserFollowingById(id) {
-    return (
-      await this.userModel.findById(id, { following: 1 }).populate('following')
-    ).following;
+    return (await this.userModel.findById(id, { following: 1 }).populate('following')).following;
   }
 
   async getCurrentUser({ uid: _id }: IUserExtendReq) {
@@ -150,18 +129,13 @@ export class UsersService {
       .populate('followers')
       .populate('following'); // .populate('customer');
     if (!infoUser) throw new BadRequestException('User was not found');
-    const { password, verificationCode, __v, ...userDtoInfo } =
-      infoUser.toObject();
+    const { password, verificationCode, __v, ...userDtoInfo } = infoUser.toObject();
     return userDtoInfo;
   }
 
   async getUsers(param, query, req) {
     const ARR_FIELDS = ['firstName', 'lastName', 'username'];
-    const {
-      page = null,
-      size = PAGINATION_USERS_DEFAULT.size,
-      sort = PAGINATION_USERS_DEFAULT.sort,
-    } = query;
+    const { page = null, size = PAGINATION_USERS_DEFAULT.size, sort = PAGINATION_USERS_DEFAULT.sort } = query;
     // const estimatedDocumentCount: number = await this.userModel.find().estimatedDocumentCount();
     console.log(100005, param, param.someName, query);
     // const find = await this.userModel.find({});
@@ -171,7 +145,7 @@ export class UsersService {
         ? [
             {
               $match: {
-                $or: ARR_FIELDS.map((field) => ({
+                $or: ARR_FIELDS.map(field => ({
                   [field]: { $regex: param.someName, $options: 'i' },
                 })),
               },
@@ -200,11 +174,7 @@ export class UsersService {
   }
 
   async getUsersExtends(query) {
-    const {
-      size = PAGINATION_USERS_DEFAULT.size,
-      sort = PAGINATION_USERS_DEFAULT.sort,
-      ...findQueries
-    } = query;
+    const { size = PAGINATION_USERS_DEFAULT.size, sort = PAGINATION_USERS_DEFAULT.sort, ...findQueries } = query;
 
     const users = await this.userModel.aggregate([
       ...(Object.keys(findQueries).length
@@ -324,21 +294,13 @@ export class UsersService {
   }
 
   async addFavoriteProduct(productId: string, req) {
-    const user = await this.userModel.findByIdAndUpdate(
-      req.user.uid,
-      { $push: { favorites: productId } },
-      { new: true },
-    );
+    const user = await this.userModel.findByIdAndUpdate(req.user.uid, { $push: { favorites: productId } }, { new: true });
 
     return user;
   }
 
   async delFavoriteProduct(productId: string, req) {
-    const user = await this.userModel.findByIdAndUpdate(
-      req.user.uid,
-      { $pull: { favorites: productId } },
-      { new: true },
-    );
+    const user = await this.userModel.findByIdAndUpdate(req.user.uid, { $pull: { favorites: productId } }, { new: true });
 
     return user;
   }
@@ -419,8 +381,7 @@ export class UsersService {
       .populate('following');
 
     if (!user) throw new BadRequestException('User was not found');
-    if (user.status !== 'Verified')
-      throw new BadRequestException('User not verified');
+    if (user.status !== 'Verified') throw new BadRequestException('User not verified');
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
@@ -444,7 +405,6 @@ export class UsersService {
   }
 
   async getRefreshToken(req: IRequestExt) {
-
     const { uid, sid } = req.user;
 
     // if (!req.get('Authorization')) {
@@ -470,9 +430,7 @@ export class UsersService {
     if (!session || !user || user._id.toString() !== session.uid.toString())
       throw new UnauthorizedException('Not authorized');
 
-    const delSession = await this.sessionModel.findByIdAndDelete(
-      sid,
-    );
+    const delSession = await this.sessionModel.findByIdAndDelete(sid);
 
     const createSession = await this.createSessionUtility(uid);
     const newPairTokens = this.getPairTokensUtility(createSession, user);
@@ -508,8 +466,7 @@ export class UsersService {
   };
 
   async createSessionUtility(uid) {
-    const expRefreshToken =
-      Date.now() + this.configService.get(this.refreshTokenPath).expIncrement;
+    const expRefreshToken = Date.now() + this.configService.get(this.refreshTokenPath).expIncrement;
 
     return await this.sessionModel.create({
       uid,
