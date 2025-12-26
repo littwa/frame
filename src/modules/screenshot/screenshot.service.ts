@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { Screenshot, ScreenshotDocument } from 'src/modules/screenshot/screenshot.schema';
 import { ScreenshotList, ScreenshotListDocument } from 'src/modules/screenshot/screenshot-list.schema';
 import { IRequestExt } from 'src/shared/interfaces/auth.interfaces';
-import { CreateScreenshotDto, CreateScreenshotListDto, } from 'src/modules/screenshot/dto/screenshot.dto';
+import { CreateScreenshotDto, CreateScreenshotListDto } from 'src/modules/screenshot/dto/screenshot.dto';
 import { CommonService } from 'src/shared/services/common.service';
 import { EMediaType } from 'src/shared/enums/common.enum';
 
@@ -14,21 +14,19 @@ export class ScreenshotService {
     @InjectModel(Screenshot.name) public screenshotModel: Model<ScreenshotDocument>,
     @InjectModel(ScreenshotList.name) public screenshotListModel: Model<ScreenshotListDocument>,
     public commonService: CommonService,
-  ) {
-  }
+  ) {}
 
   async addScreenshotsList(body: CreateScreenshotListDto, req: IRequestExt) {
     return this.screenshotListModel.create({ ...body, author: req.user.uid, created: Date.now() });
   }
 
   async delListAndScreenshots(id: string): Promise<any> {
-
     const deleted = await this.screenshotListModel.findByIdAndDelete(id);
     const screenshot = await this.screenshotModel.deleteMany({ _id: { $in: deleted.screenshots } });
 
-    let cloudinaryResponse = [];
+    const cloudinaryResponse = [];
 
-    for(let i = 0; i < deleted.public_id_screenshots.length; i++) {
+    for (let i = 0; i < deleted.public_id_screenshots.length; i++) {
       const item = await this.commonService.deleteFromCloudinary(deleted.public_id_screenshots[i], EMediaType.Image);
       cloudinaryResponse.push(item);
     }
@@ -37,7 +35,7 @@ export class ScreenshotService {
   async createScreenshotsAndAddToList(files: Array<Express.Multer.File>, body: CreateScreenshotDto, listId: string) {
     let result;
     for (let i = 0; i < files.length; i++) {
-      let file = files[i];
+      const file = files[i];
       const img = await this.commonService.cloudinaryHost(file, 'screenshot');
       const screenshot = await this.screenshotModel.create({
         // ...body,
@@ -70,8 +68,8 @@ export class ScreenshotService {
   }
 
   async getScreenshotsListAggregate(listId: string): Promise<any> {
-      const listAgg = await this.screenshotListModel.find({ _id: listId }).populate('screenshots');
-      if (!listAgg) throw new NotFoundException(`Can't find list`);
+    const listAgg = await this.screenshotListModel.find({ _id: listId }).populate('screenshots');
+    if (!listAgg) throw new NotFoundException(`Can't find list`);
     return listAgg[0];
   }
 }

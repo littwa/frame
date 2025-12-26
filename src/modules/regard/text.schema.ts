@@ -22,7 +22,7 @@ export class Text extends Document {
   translation: string[];
 
   @Prop({ type: String, default: '' })
-  pronunciation : string; // url form api
+  pronunciation: string; // url form api
 
   @Prop({ type: String, default: ETextType.Word, enum: ETextType })
   type: ETextType;
@@ -33,7 +33,7 @@ export class Text extends Document {
   @Prop({ type: String, default: '' })
   img: string;
 
-  @Prop({type: String, default: '' }) // for del files from cloudinary
+  @Prop({ type: String, default: '' }) // for del files from cloudinary
   public_id: string;
 
   @Prop({ type: Boolean, default: false })

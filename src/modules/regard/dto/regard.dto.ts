@@ -106,5 +106,5 @@ export class CheckQualifyDto {
   @IsOptional()
   @ApiProperty()
   @IsObject()
-  type: {[key: string]: any };
+  type: { [key: string]: any };
 }

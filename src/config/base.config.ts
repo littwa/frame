@@ -1,8 +1,4 @@
-import {
-  CLOUDINARY_API_KEY,
-  CLOUDINARY_API_SECRET,
-  CLOUDINARY_CLOUD_NAME,
-} from 'src/shared/constants/url.constants';
+import { CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, CLOUDINARY_CLOUD_NAME } from 'src/shared/constants/url.constants';
 
 export default () => ({
   nodemailerTransporterConfig: {

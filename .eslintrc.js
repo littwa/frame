@@ -21,7 +21,7 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': 'off',
         '@typescript-eslint/no-unused-expressions': ['error', { allowShortCircuit: true, allowTernary: true }],
         'prettier/prettier': [
-            'off',
+            // 'off',
             // 'error',
             // {
             //     endOfLine: 'auto',
@@ -32,11 +32,11 @@ module.exports = {
             //     // tabWidth: 2,
             //     // endOfLine: 'auto',
             // },
-            // 'warn',
-            // {
-            //     tabWidth: 2,
-            //     endOfLine: 'auto',
-            // },
+            'warn',
+            {
+                tabWidth: 2,
+                endOfLine: 'auto',
+            },
         ],
     },
 };

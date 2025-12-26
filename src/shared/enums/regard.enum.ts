@@ -1,17 +1,17 @@
 export enum ETextType {
   Word = 'word',
   Phrase = 'phrase',
-  Sentence = 'sentence'
+  Sentence = 'sentence',
 }
 
 export enum EQualifyType {
   Translate = 'translate',
-  TranslateReverse = 'translateReverse'
+  TranslateReverse = 'translateReverse',
 }
 
 export enum EQualifyAnswers {
-  Global= 'global',
+  Global = 'global',
   Local = 'local',
   InQualify = 'inQualify',
-  Essential = 'essential'
+  Essential = 'essential',
 }

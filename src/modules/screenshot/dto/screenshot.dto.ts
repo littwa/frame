@@ -40,7 +40,6 @@ export class UpdateScreenshotDto {
   @IsOptional()
   readonly old_file_type?: EScreenshotType;
 
-
   @ApiProperty()
   @IsIn([EScreenshotType.English, EScreenshotType.IT, EScreenshotType.Other])
   @IsOptional()
@@ -51,5 +50,4 @@ export class CreateScreenshotDto extends UpdateScreenshotDto {
   @ApiProperty()
   @IsString()
   readonly name: string;
-
 }

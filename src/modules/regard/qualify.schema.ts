@@ -11,7 +11,7 @@ export class Qualify extends Document {
   @Prop({ type: String, required: true, enum: EQualifyType })
   type: EQualifyType;
 
-  @Prop( { type: mongoose.Schema.Types.ObjectId, ref: 'Regard' })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Regard' })
   regard: RegardDocument;
 
   @Prop({ type: Boolean, default: false })
@@ -33,7 +33,7 @@ export class Qualify extends Document {
     checkedAmount: number;
     lapChecked: boolean;
     finishedInQualify: boolean;
-    obj: { [key: string]: any }
+    obj: { [key: string]: any };
   }[];
 
   @Prop({

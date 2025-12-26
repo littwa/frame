@@ -9,15 +9,15 @@ import { TextService } from 'src/modules/regard/text.service';
 import { Qualify, QualifySchema } from 'src/modules/regard/qualify.schema';
 
 @Module({
-    imports: [
-        MongooseModule.forFeature([
-            { name: Regard.name, schema: RegardSchema },
-            { name: Text.name, schema: TextSchema },
-            { name: Qualify.name, schema: QualifySchema },
-        ]),
-    ],
-    providers: [RegardService, CommonService, TextService], // TextService,
-    controllers: [RegardController],
-    // exports: [RegardService, TextService]
+  imports: [
+    MongooseModule.forFeature([
+      { name: Regard.name, schema: RegardSchema },
+      { name: Text.name, schema: TextSchema },
+      { name: Qualify.name, schema: QualifySchema },
+    ]),
+  ],
+  providers: [RegardService, CommonService, TextService], // TextService,
+  controllers: [RegardController],
+  // exports: [RegardService, TextService]
 })
 export class RegardModule {}

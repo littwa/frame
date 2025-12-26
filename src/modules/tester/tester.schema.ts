@@ -9,54 +9,54 @@ export type TesterDocument = Tester & Document;
 
 @Schema()
 export class Tester extends Document {
-    @Prop({ type: String, required: true })
-    name: string;
+  @Prop({ type: String, required: true })
+  name: string;
 
-    @Prop({ type: String, required: true })
-    description: string;
+  @Prop({ type: String, required: true })
+  description: string;
 
-    @Prop({
-        type: String,
-        default: 'a',
-        enum: ['a', 'b', 'c'],
-    })
-    status: string;
+  @Prop({
+    type: String,
+    default: 'a',
+    enum: ['a', 'b', 'c'],
+  })
+  status: string;
 
-    @Prop({
-        type: String,
-        default: 'xxx',
-        enum: ['xxx', 'yyy', 'zzz'],
-    })
-    distinct: string;
+  @Prop({
+    type: String,
+    default: 'xxx',
+    enum: ['xxx', 'yyy', 'zzz'],
+  })
+  distinct: string;
 
-    @Prop({
-        type: Number,
-        default: ETesterNum.One,
-        enum: ETesterNum,
-    })
-    num: ETesterNum;
+  @Prop({
+    type: Number,
+    default: ETesterNum.One,
+    enum: ETesterNum,
+  })
+  num: ETesterNum;
 
-    @Prop({
-        type: String,
-        default: ETesterSize.L,
-        enum: ETesterSize,
-    })
-    size: ETesterNum;
+  @Prop({
+    type: String,
+    default: ETesterSize.L,
+    enum: ETesterSize,
+  })
+  size: ETesterNum;
 
-    @Prop({ type: Object, default: Date.now() })
-    dateCreated: Date;
+  @Prop({ type: Object, default: Date.now() })
+  dateCreated: Date;
 
-    // @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product', default: [] }] })
-    // productsList: Product[];
-    //
-    // @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-    // createByUser: Product[];
+  // @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product', default: [] }] })
+  // productsList: Product[];
+  //
+  // @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  // createByUser: Product[];
 
-    // @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Customer' })
-    // customerId: Customer;
+  // @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Customer' })
+  // customerId: Customer;
 
-    //@Prop({ type: [CustomerSchema] })
-    // productsList: ICustomer[]; // Check how it works???
+  //@Prop({ type: [CustomerSchema] })
+  // productsList: ICustomer[]; // Check how it works???
 }
 
 export const TesterSchema = SchemaFactory.createForClass(Tester);

@@ -3,8 +3,8 @@ import { TesterAService } from './tester.a.service';
 
 @Injectable()
 export class TesterBService {
-    constructor(
-        @Inject(forwardRef(() => TesterAService))
-        private catsService: TesterAService,
-    ) {}
+  constructor(
+    @Inject(forwardRef(() => TesterAService))
+    private catsService: TesterAService,
+  ) {}
 }

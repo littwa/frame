@@ -10,10 +10,9 @@ export class TextService {
   constructor(
     // @InjectModel(Regard.name) public regardModel: Model<RegardDocument>,
     @InjectModel(Text.name) private textModel: Model<TextDocument>,
-  ) {
-  }
+  ) {}
 
   async find(body) {
-     return this.textModel.findOne({ content: body.content });
+    return this.textModel.findOne({ content: body.content });
   }
 }

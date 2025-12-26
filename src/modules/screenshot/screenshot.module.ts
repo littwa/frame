@@ -7,12 +7,14 @@ import { CommonService } from 'src/shared/services/common.service';
 import { ScreenshotController } from 'src/modules/screenshot/screenshot.controller';
 
 @Module({
-  imports: [MongooseModule.forFeature([
-    { name: Screenshot.name, schema: ScreenshotSchema },
-    { name: ScreenshotList.name, schema: ScreenshotListSchema }
-  ])],
+  imports: [
+    MongooseModule.forFeature([
+      { name: Screenshot.name, schema: ScreenshotSchema },
+      { name: ScreenshotList.name, schema: ScreenshotListSchema },
+    ]),
+  ],
   controllers: [ScreenshotController],
   providers: [ScreenshotService, CommonService],
-  exports: [ScreenshotService]
+  exports: [ScreenshotService],
 })
 export class ScreenshotModule {}

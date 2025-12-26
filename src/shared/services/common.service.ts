@@ -1,18 +1,18 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import {
-    CLOUDINARY_API_KEY,
-    CLOUDINARY_API_SECRET,
-    CLOUDINARY_CLOUD_NAME,
-    IMGBB_UPLOAD_URL,
-    STATIC,
-    UPLOADS
+  CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET,
+  CLOUDINARY_CLOUD_NAME,
+  IMGBB_UPLOAD_URL,
+  STATIC,
+  UPLOADS,
 } from 'src/shared/constants/url.constants';
 import * as fs from 'fs';
 import * as axios from 'axios';
 import * as cloudinary from 'cloudinary';
 import * as path from 'path';
 import * as sharp from 'sharp';
-import { EMediaType } from "../enums/media.enum";
+import { EMediaType } from '../enums/media.enum';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -46,7 +46,8 @@ export class CommonService {
     let subdirectory: string;
 
     try {
-      // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       const response = await axios({
         method: 'GET',
         url: req,
@@ -60,14 +61,18 @@ export class CommonService {
       return '';
     }
 
-    switch (true){
-      case audio.slice(0,3) === 'bix': subdirectory = 'bix';
-      break;
-      case audio.slice(0,2) === 'gg': subdirectory = 'gg';
-      break;
-      case this.containsNumberOrPunctuation(audio[0]): subdirectory = 'number';
-      break;
-      default: subdirectory = audio[0];
+    switch (true) {
+      case audio.slice(0, 3) === 'bix':
+        subdirectory = 'bix';
+        break;
+      case audio.slice(0, 2) === 'gg':
+        subdirectory = 'gg';
+        break;
+      case this.containsNumberOrPunctuation(audio[0]):
+        subdirectory = 'number';
+        break;
+      default:
+        subdirectory = audio[0];
     }
 
     return `https://media.merriam-webster.com/audio/prons/en/us/mp3/${subdirectory}/${audio}.mp3`;
@@ -80,11 +85,7 @@ export class CommonService {
     let response: cloudinary.UploadApiResponse;
 
     try {
-      if (
-        !Object.values(EMediaType).includes(
-          file.mimetype.split('/')[0] as EMediaType,
-        )
-      )
+      if (!Object.values(EMediaType).includes(file.mimetype.split('/')[0] as EMediaType))
         new NotFoundException(`Wrong media type (mimetype)`);
 
       let resource_type: 'image' | 'video' | 'raw' | 'auto';
@@ -114,16 +115,12 @@ export class CommonService {
     return response;
   }
 
-  public async deleteFromCloudinary(
-    public_id: string,
-    type: EMediaType | 'image',
-  ) {
+  public async deleteFromCloudinary(public_id: string, type: EMediaType | 'image') {
     if (!public_id) return;
     cloudinary.v2.config(this.configService.get('cloudinary'));
     return await cloudinary.v2.api.delete_resources([public_id], {
       type: 'upload',
-      resource_type:
-        type === EMediaType.Image ? EMediaType.Image : EMediaType.Video,
+      resource_type: type === EMediaType.Image ? EMediaType.Image : EMediaType.Video,
     });
   }
 
@@ -153,7 +150,7 @@ export class CommonService {
   // };
 
   multerFactory(files: Array<Express.Multer.File>): string[] {
-    return files.map((file) => {
+    return files.map(file => {
       const uniqueSuffix = Date.now();
       const ext = '.webp'; //  path.parse(file.originalname).ext;
       // console.log(
@@ -162,9 +159,7 @@ export class CommonService {
       sharp(file.buffer)
         .resize(240, 240)
         // .jpeg({ mozjpeg: true })
-        .toFile(process.cwd() + '/uploads/' + uniqueSuffix + ext, (err, info) =>
-          console.log(1000666, err, info),
-        );
+        .toFile(process.cwd() + '/uploads/' + uniqueSuffix + ext, (err, info) => console.log(1000666, err, info));
       return `${process.env.BASE_URL_API}/${UPLOADS}/${uniqueSuffix}${ext}`;
     });
   }
@@ -173,14 +168,9 @@ export class CommonService {
     const promise$$$ = new Promise((resolve, rej) => {
       fs.readdir(process.cwd() + '/uploads/static', (err, files) => {
         const results = new Array<string>();
-        files.forEach((file) => {
-          console.log(
-            'file: ',
-            `${process.env.BASE_URL_API}/${UPLOADS}/${STATIC}/${file}`,
-          );
-          results.push(
-            `${process.env.BASE_URL_API}/${UPLOADS}/${STATIC}/${file}`,
-          );
+        files.forEach(file => {
+          console.log('file: ', `${process.env.BASE_URL_API}/${UPLOADS}/${STATIC}/${file}`);
+          results.push(`${process.env.BASE_URL_API}/${UPLOADS}/${STATIC}/${file}`);
         });
         resolve(results);
       });
@@ -193,7 +183,7 @@ export class CommonService {
   public async getFileListingPath(directory?: string): Promise<Array<string>> {
     const promise = new Promise((resolve, rej) => {
       fs.readdir(process.cwd() + '/uploads/static', (err, files) => {
-        const results = files.map((file) => `${UPLOADS}/${STATIC}/${file}`);
+        const results = files.map(file => `${UPLOADS}/${STATIC}/${file}`);
         resolve(results);
       });
     });
@@ -209,7 +199,8 @@ export class CommonService {
     let response;
 
     try {
-      // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       response = await axios({
         method: 'POST',
         url: IMGBB_UPLOAD_URL,

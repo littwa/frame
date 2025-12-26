@@ -1,10 +1,15 @@
 import {
   Body,
-  Controller, Delete, Get,
+  Controller,
+  Delete,
+  Get,
   HttpCode,
-  HttpStatus, Param, Patch,
+  HttpStatus,
+  Param,
+  Patch,
   Post,
-  Req, UploadedFiles,
+  Req,
+  UploadedFiles,
   UseGuards,
   UseInterceptors,
   UsePipes,
@@ -21,14 +26,16 @@ import {
   TextDto,
   ParamIdDto,
   ParamIdTextRegardDto,
-  CreateQualifyDto, ParamIdTextRegardQualifyDto, CheckQualifyDto, TextDtoFind,
+  CreateQualifyDto,
+  ParamIdTextRegardQualifyDto,
+  CheckQualifyDto,
+  TextDtoFind,
 } from 'src/modules/regard/dto/regard.dto';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { ParamIdScreenshotDto } from '../screenshot/dto/screenshot.dto';
 
 @Controller('regard')
 export class RegardController {
-
   constructor(private regardService: RegardService) {}
 
   @ApiOperation({ summary: 'Add Regard' })
@@ -54,10 +61,12 @@ export class RegardController {
   @UseInterceptors(AnyFilesInterceptor())
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
-  async createTextAndAddToRegard(@UploadedFiles() files: Array<Express.Multer.File>,
-                                      @Body() body: TextDto,
-                                      @Param() param: ParamIdDto,
-                                      @Req() req: IRequestExt) {
+  async createTextAndAddToRegard(
+    @UploadedFiles() files: Array<Express.Multer.File>,
+    @Body() body: TextDto,
+    @Param() param: ParamIdDto,
+    @Req() req: IRequestExt,
+  ) {
     return this.regardService.createTextAndAddToRegard(files[0], body, param.id, req);
   }
 
@@ -97,7 +106,7 @@ export class RegardController {
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(AnyFilesInterceptor())
   @HttpCode(HttpStatus.CREATED)
-  async updateText(@UploadedFiles() files: Array<Express.Multer.File>, @Param() param: ParamIdDto, @Body()body: any) {
+  async updateText(@UploadedFiles() files: Array<Express.Multer.File>, @Param() param: ParamIdDto, @Body() body: any) {
     return await this.regardService.updateText(files[0], body);
   }
 
@@ -149,9 +158,7 @@ export class RegardController {
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
-  async createQualify(@Body() body: CreateQualifyDto,
-                                 @Param() param: ParamIdDto,
-                                 @Req() req: IRequestExt) {
+  async createQualify(@Body() body: CreateQualifyDto, @Param() param: ParamIdDto, @Req() req: IRequestExt) {
     return this.regardService.createQualify(body, param.id, req);
   }
 
@@ -164,9 +171,7 @@ export class RegardController {
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
-  async checkQualify(@Body() body: CheckQualifyDto,
-                      @Param() param: ParamIdTextRegardQualifyDto,
-                      @Req() req: IRequestExt) {
+  async checkQualify(@Body() body: CheckQualifyDto, @Param() param: ParamIdTextRegardQualifyDto, @Req() req: IRequestExt) {
     return this.regardService.checkQualifyExec(body, param, req);
   }
 

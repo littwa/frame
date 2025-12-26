@@ -5,9 +5,9 @@ import { NodemailerTransporterConfig } from 'src/shared/interfaces/config.interf
 
 @Injectable()
 export class MailConnectorService implements MailerOptionsFactory {
-    constructor(private readonly configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService) {}
 
-    createMailerOptions(): MailerOptions | Promise<MailerOptions> {
-        return this.configService.get<NodemailerTransporterConfig>('nodemailerTransporterConfig');
-    }
+  createMailerOptions(): MailerOptions | Promise<MailerOptions> {
+    return this.configService.get<NodemailerTransporterConfig>('nodemailerTransporterConfig');
+  }
 }

@@ -1,12 +1,16 @@
 import {
   Body,
-  Controller, Delete, Get,
+  Controller,
+  Delete,
+  Get,
   HttpCode,
   HttpStatus,
   Param,
   Post,
-  Req, UploadedFiles,
-  UseGuards, UseInterceptors,
+  Req,
+  UploadedFiles,
+  UseGuards,
+  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -46,9 +50,11 @@ export class ScreenshotController {
   @UseInterceptors(AnyFilesInterceptor())
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
-  async createScreenshotsAndAddToList(@UploadedFiles() files: Array<Express.Multer.File>,
-                                      @Body() body: CreateScreenshotDto,
-                                      @Param() param: ParamIdScreenshotDto) {
+  async createScreenshotsAndAddToList(
+    @UploadedFiles() files: Array<Express.Multer.File>,
+    @Body() body: CreateScreenshotDto,
+    @Param() param: ParamIdScreenshotDto,
+  ) {
     return this.screenshotService.createScreenshotsAndAddToList(files, body, param.id);
   }
 

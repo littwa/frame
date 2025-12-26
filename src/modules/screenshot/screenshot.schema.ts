@@ -18,14 +18,14 @@ export class Screenshot extends Document {
   @Prop({ type: String, required: true })
   url: string;
 
-  @Prop({type: String, default: '' }) // for del files from cloudinary
+  @Prop({ type: String, default: '' }) // for del files from cloudinary
   public_id: string;
 
   @Prop({ type: Boolean, default: false })
   essential: false;
 
   @Prop({ type: Object, default: {} })
-  data: {[key: string]: any};
+  data: { [key: string]: any };
 
   @Prop({ type: String, required: true })
   created: Date;
