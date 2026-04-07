@@ -13,6 +13,7 @@ import { ScreenshotModule } from './modules/screenshot/screenshot.module';
 // import { ScreenshotController } from './modules/screenshot/screenshot.controller';
 import { RegardModule } from './modules/regard/regard.module';
 // import { TextService } from './modules/regard/text.service';
+import { QuizModule } from 'src/modules/quiz/quiz.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { RegardModule } from './modules/regard/regard.module';
     TesterModule,
     ScreenshotModule,
     RegardModule,
+    QuizModule,
   ],
   controllers: [
     AppController,
