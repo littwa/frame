@@ -11,7 +11,7 @@ import * as fs from 'fs';
 import * as axios from 'axios';
 import * as cloudinary from 'cloudinary';
 import * as path from 'path';
-import * as sharp from 'sharp';
+import sharp from 'sharp';
 import { EMediaType } from '../enums/media.enum';
 import { ConfigService } from '@nestjs/config';
 
