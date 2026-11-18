@@ -14,6 +14,8 @@ export class MailService {
     try {
       await this.mailerService.sendMail({
         to: to, // to, // Recipient address heeekq@gmail.com lll0000@bigmir.net
+        from: "'No Replay message' <noreply@yourdomain.com>",
+        // sender: 'Jackson',
         subject: 'Welcome to Our App!', // Subject line
         text: `Hello ${name}, welcome to our platform!`, // Plain text body
         html: `<b>Hello ${name}</b>, welcome to our platform!`, // HTML body content

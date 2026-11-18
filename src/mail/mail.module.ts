@@ -15,7 +15,7 @@ import { MailService } from './mail.service';
         },
       },
       defaults: {
-        from: '"No Reply" <noreply@example.com>', // Default sender address
+        from: '"No Reply" <xxx@xxx.com>', // Default sender address
       },
     }),
   ],
