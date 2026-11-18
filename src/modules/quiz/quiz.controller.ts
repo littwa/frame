@@ -1,10 +1,11 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { QuizService } from 'src/modules/quiz/quiz.service';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Roles } from 'src/authorization/roles.decorator';
 import { ERole } from 'src/shared/enums/role.enum';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { IQuizMathGenerateParamsDto } from 'src/modules/quiz/dto/quiz.dto';
+import { READ } from '@eslint-community/eslint-utils';
 
 @Controller('quiz')
 export class QuizController {
@@ -34,5 +35,10 @@ export class QuizController {
   @HttpCode(HttpStatus.CREATED)
   async quiz() {
     return await this.quizService.tst();
+  }
+
+  @Get('test2')
+  async quizTest() {
+    return { q: 5, p: [9, 6, 9, 6, 5, 11, 888] };
   }
 }

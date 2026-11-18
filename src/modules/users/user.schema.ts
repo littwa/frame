@@ -73,6 +73,12 @@ export class User extends Document {
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
   following: UserDocument[];
 
+  @Prop({ type: Object, default: { test: 'data' } })
+  data: { [k: string]: any };
+
+  @Prop({ type: Object, default: { test: 'quiz' } })
+  quiz: { [k: string]: any };
+
   // @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }] })
   // favorites: ProductDocument[];
   //

@@ -11,6 +11,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from 'src/authorization/roles.guard';
 import { Session, SessionSchema } from 'src/modules/users/session.schema';
 import { HttpModule } from '@nestjs/axios';
+import { MailModule } from '../../mail/mail.module';
 
 @Global()
 @Module({
@@ -50,7 +51,7 @@ import { HttpModule } from '@nestjs/axios';
     SharedModule,
     PassportModule,
     HttpModule,
-  ],
+  ], // MailModule,
   providers: [
     UsersService,
     JwtStrategy,
@@ -60,6 +61,6 @@ import { HttpModule } from '@nestjs/axios';
     },
   ],
   controllers: [UsersController],
-  exports: [UsersService, MongooseModule],
+  exports: [UsersService, MongooseModule], // MailModule
 })
 export class UsersModule {}

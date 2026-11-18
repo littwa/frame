@@ -99,6 +99,30 @@ export class UsersController {
     return await this.userService.updateUser(param, body, files[0]);
   }
 
+  @ApiOperation({ summary: 'send email' })
+  @ApiResponse({ status: 200, description: 'Return sent.' })
+  @ApiResponse({ status: 404, description: 'Can not send.' })
+  @ApiBearerAuth()
+  @Post('send-email')
+  @UseGuards(JwtAuthGuard)
+  @Roles([ERole.Admin, ERole.Customer])
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  @HttpCode(HttpStatus.OK)
+  async sendEmail(@Body() body: { email: string, text: string }) {
+    return this.userService.sendEmail(body.email, body.text);
+  }
+
+  @ApiOperation({ summary: 'Update pass' })
+  @ApiResponse({ status: 200, description: 'Return updated.' })
+  @ApiResponse({ status: 404, description: 'Can not update.' })
+  @ApiBearerAuth()
+  @Patch('up-date-pass')
+  @UseGuards(JwtAuthGuard)
+  @Roles([ERole.Admin, ERole.Customer])
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  @HttpCode(HttpStatus.OK)
+  async changePassword(@Body() body: any) {}
+
   // @Get('admin/verify/:verificationCode')
   // @HttpCode(HttpStatus.OK)
   // getVerifycationUser(@Param() param): any {

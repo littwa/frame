@@ -15,6 +15,7 @@ import { PAGINATION_USERS_DEFAULT } from 'src/shared/constants/users.constants';
 import { ESortOrderBy, ETokenTypes } from 'src/shared/enums/common.enum';
 import { EMediaType } from 'src/shared/enums/media.enum';
 import { IRequestExt, IUserExtendReq } from 'src/shared/interfaces/auth.interfaces';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class UsersService {
@@ -29,6 +30,7 @@ export class UsersService {
     @Inject('UseFactoryTest') public configFactory: any,
     @Inject('UseClassTest') public useClassTest: any,
     private commonService: CommonService,
+    private mailService: MailService,
   ) {}
 
   async createUserCustomer(createUserCustomerDto: UserCustomerCreateDto, file: Express.Multer.File): Promise<object> {
@@ -60,6 +62,19 @@ export class UsersService {
 
     return userDtoReverse;
   }
+
+  async sendEmail(email: string, text: string = 'Hi') {
+    const tst = await this.mailService.tstMail();
+    const tester = await this.mailService.sendWelcomeEmail(email, text);
+    console.log('email sending');
+    // console.log(this.mailService.);
+    return {
+      email,
+      tst,
+    };
+  }
+
+  async changePassword(email: string) {}
 
   async updateUser(param, body, file: Express.Multer.File) {
     if (file && file.mimetype.split('/')[0] !== EMediaType.Image) {

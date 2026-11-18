@@ -14,6 +14,7 @@ import { ScreenshotModule } from './modules/screenshot/screenshot.module';
 import { RegardModule } from './modules/regard/regard.module';
 // import { TextService } from './modules/regard/text.service';
 import { QuizModule } from 'src/modules/quiz/quiz.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { QuizModule } from 'src/modules/quiz/quiz.module';
     ScreenshotModule,
     RegardModule,
     QuizModule,
+    // MailModule
   ],
   controllers: [
     AppController,
